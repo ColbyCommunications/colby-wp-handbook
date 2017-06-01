@@ -1,0 +1,45 @@
+{
+  "name": "colby-react-student-handbook",
+  "version": "1.0.0",
+  "description": "A React/Redux/WP REST API feature for displaying the Colby College student handbook",
+  "main": "src/index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ColbyCommunications/colby-react-student-handbook.git"
+  },
+  "author": "John Watkins, Colby Communications",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ColbyCommunications/colby-react-student-handbook/issues"
+  },
+  "homepage": "https://github.com/ColbyCommunications/colby-react-student-handbook#readme",
+  "devDependencies": {
+    "colby-code-standards": "^1.0.2",
+    "husky": "^0.13.4"
+  },
+	"dependencies": {
+    "babel-preset-es2015": "^6.24.1",
+    "babel-preset-react": "^6.24.1",
+    "babel-preset-stage-1": "^6.24.1",
+    "colby-react-animated-ellipsis": "^1.0.4",
+    "colby-react-search-input": "^1.0.3",
+    "colby-scss": "^1.0.3",
+    "colby-svg": "^1.0.21",
+    "lodash": "^4.17.4",
+    "prop-types": "^15.5.10",
+    "react": "^15.5.4",
+    "react-dom": "^15.5.4",
+    "react-redux": "^5.0.5",
+    "redux": "^3.6.0",
+    "redux-logger": "^3.0.6",
+    "redux-thunk": "^2.2.0"
+  },
+  "eslintConfig": {
+    "extends": [
+      "./node_modules/colby-code-standards/.eslintrc.js"
+    ]
+  }
+}
