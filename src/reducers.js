@@ -1,5 +1,3 @@
-import { combineReducers } from 'redux';
-
 import {
   REQUEST_CATEGORIES,
   RECEIVE_CATEGORIES,
@@ -36,10 +34,13 @@ function categories(
       return Object.assign({}, state, {
         fetching: false,
         categories: action.categories,
+        activeCategory: action.categories[0].id,
+        activeCategoryTitle: action.categories[0].name,
       });
     case SET_ACTIVE_CATEGORY:
       return Object.assign({}, state, {
         activeCategory: action.id,
+        activeCategoryTitle: action.title,
       });
     default:
       return state;
@@ -47,20 +48,24 @@ function categories(
 }
 
 /* Reducer for requesting and receiving pages in a category. */
-function page(
+function pages(
   state = {
     fetching: false,
     posts: [],
+    loaded: false,
   },
   action
 ) {
   switch (action.type) {
+    case RECEIVE_CATEGORIES:
+      return Object.assign({}, state, { loaded: false });
     case REQUEST_PAGE:
-      return Object.assign({}, state, { fetching: true });
+      return Object.assign({}, state, { fetching: true, loaded: true });
     case RECEIVE_PAGE:
       return Object.assign({}, state, {
         fetching: false,
         posts: action.posts,
+        loaded: true,
       });
     default:
       return state;
@@ -70,7 +75,7 @@ function page(
 /* Reducer for search-related actions. */
 function search(
   state = {
-    fetching: false,
+    searching: false,
     posts: [],
     searchTerm: '',
   },
@@ -91,4 +96,4 @@ function search(
   }
 }
 
-export default combineReducers({ categories, page, search });
+export { categories, pages, search };

@@ -2,35 +2,12 @@ import debounce from 'lodash/debounce';
 
 const REST_BASE = 'http://author.colby.edu/communitylife/wp-json/wp/v2/';
 
-export const REQUEST_CATEGORIES = 'REQUEST_CATEGORIES';
-export function requestCategories() {
-  return {
-    type: REQUEST_CATEGORIES,
-  };
-}
-
-export const RECEIVE_CATEGORIES = 'RECEIVE_CATEGORIES';
-export function receiveCategories(categories) {
-  return {
-    type: RECEIVE_CATEGORIES,
-    categories,
-  };
-}
-
-export function fetchCategories() {
-  return (dispatch) => {
-    dispatch(requestCategories());
-    return fetch(`${REST_BASE}handbook-section?per_page=99`)
-      .then((response) => response.json())
-      .then((categories) => dispatch(receiveCategories(categories)));
-  };
-}
-
 export const SET_ACTIVE_CATEGORY = 'SET_ACTIVE_CATEGORY';
-export function setActiveCategory(id) {
+export function setActiveCategory({ id, title }) {
   return {
     type: SET_ACTIVE_CATEGORY,
     id,
+    title,
   };
 }
 
@@ -50,12 +27,13 @@ export function receivePage(posts) {
 }
 
 const fetchPageCache = {};
-export function fetchPage(id) {
+export function fetchPage({ id, title }) {
   return (dispatch) => {
     dispatch(requestPage());
-    dispatch(setActiveCategory(id));
+    dispatch(setActiveCategory({ id, title }));
 
-    const url = `${REST_BASE}handbook-page?categories=${id}`;
+    let url = `${REST_BASE}handbook-page?handbook-section=${id}`;
+    url = `${url}&per_page=99&orderby=slug&order=asc`;
 
     if (url in fetchPageCache) {
       return dispatch(receivePage(fetchPageCache[url]));
@@ -95,7 +73,7 @@ export function runSearch(searchTerm) {
   return (dispatch) => {
     dispatch(changeSearchTerm(searchTerm));
 
-    const url = `${REST_BASE}student-organization?search=${searchTerm}`;
+    const url = `${REST_BASE}handbook-page?search=${searchTerm}`;
 
     if (url in searchCache) {
       return dispatch(receiveSearchResults(searchCache[url]));

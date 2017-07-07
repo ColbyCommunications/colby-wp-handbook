@@ -5,19 +5,20 @@ import PropTypes from 'prop-types';
 
 import styles from 'colby-scss/modules/student-handbook.scss';
 
-export default function Club({ title, content }) {
+export default function Post({ id, title, content, link }) {
   return (
-    <div className={styles.club}>
-      <h1
-        className={styles.title}
-        dangerouslySetInnerHTML={{ __html: title }}
-      />
+    <div className={styles.post}>
+      <h1 className={styles['post-title']} id={`post-${id}`}>
+        <a href={link} dangerouslySetInnerHTML={{ __html: title }} />
+      </h1>
       <p dangerouslySetInnerHTML={{ __html: content }} />
     </div>
   );
 }
 
-Club.propTypes = {
-  title: PropTypes.string.isRequired,
+Post.propTypes = {
   content: PropTypes.string.isRequired,
+  id: PropTypes.number.isRequired,
+  link: PropTypes.string.isRequired,
+  title: PropTypes.string.isRequired,
 };

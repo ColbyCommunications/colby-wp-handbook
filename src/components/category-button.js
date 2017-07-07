@@ -14,7 +14,7 @@ const CategoryButton = ({ active, id, name, onClick }) => (
       .join(' ')
       .trim()}
     dangerouslySetInnerHTML={{ __html: name }}
-    onClick={() => onClick(id)}
+    onClick={() => onClick({ id, title: name })}
   />
 );
 

@@ -7,8 +7,8 @@ import styles from 'colby-scss/modules/student-handbook.scss';
 
 import Post from './post';
 
-const Page = ({ posts, fetching, searchTerm, activeCategory }) => {
-  if (fetching === true) {
+const Page = ({ searching, searchTerm, activeCategory, posts }) => {
+  if (searching === true) {
     return (
       <div className={[styles.page, styles['page--loading']].join(' ').trim()}>
         <AnimatedEllipsis />
@@ -16,30 +16,30 @@ const Page = ({ posts, fetching, searchTerm, activeCategory }) => {
     );
   }
 
+  const title = searchTerm !== ''
+    ? <h2>Results for <i>{searchTerm}</i></h2>
+    : <h2>{activeCategory.name}</h2>;
+
   return (
     <div className={styles.page}>
-      {posts.map((post) => (
-        <Post
-          key={post.id}
-          title={post.title.rendered}
-          content={post.content.rendered}
-        />
-      ))}
+      {title}
+      {posts.map((post) => <Post key={post.id} {...post} />)}
     </div>
   );
 };
 
-Page.defaultProps = {
-  activeCategory: null,
-  posts: [],
-  searchTerm: '',
-};
-
 Page.propTypes = {
-  activeCategory: PropTypes.number,
-  fetching: PropTypes.bool.isRequired,
-  posts: PropTypes.arrayOf(PropTypes.object),
-  searchTerm: PropTypes.string,
+  activeCategory: PropTypes.objectOf(
+    PropTypes.oneOfType([
+      PropTypes.number,
+      PropTypes.string,
+      PropTypes.object,
+      PropTypes.array,
+    ])
+  ).isRequired,
+  searching: PropTypes.bool.isRequired,
+  posts: PropTypes.arrayOf(PropTypes.object).isRequired,
+  searchTerm: PropTypes.string.isRequired,
 };
 
 export default Page;
