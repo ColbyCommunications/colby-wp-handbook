@@ -1,11 +1,8 @@
 {
-  "name": "colby-react-student-handbook",
+  "name": "colby-wp-react-student-handbook",
   "version": "1.0.3",
   "description": "A React/Redux/WP REST API feature for displaying the Colby College student handbook",
   "main": "src/index.js",
-  "scripts": {
-    "prepush": "if [ \"$(git branch)\" == \"* master\" ]; then npm version patch && npm publish; fi"
-  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/ColbyCommunications/colby-react-student-handbook.git"
