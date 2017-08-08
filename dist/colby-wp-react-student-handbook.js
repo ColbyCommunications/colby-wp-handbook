@@ -30334,7 +30334,8 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; /* eslint react/no-danger: 0 */
+
 
 var _react = __webpack_require__(4);
 
@@ -30474,17 +30475,20 @@ function Post(_ref) {
     _react2.default.createElement(
       'h1',
       { className: _studentHandbookModule2.default['post-title'], id: 'post-' + id },
-      _react2.default.createElement(_reactRouterDom.Link, { to: '/' + slug, dangerouslySetInnerHTML: { __html: title } })
+      _react2.default.createElement(_reactRouterDom.Link, {
+        to: '/' + slug,
+        dangerouslySetInnerHTML: { __html: title.rendered }
+      })
     ),
-    _react2.default.createElement('p', { dangerouslySetInnerHTML: { __html: content } })
+    _react2.default.createElement('p', { dangerouslySetInnerHTML: { __html: content.rendered } })
   );
 }
 
 Post.propTypes = {
-  content: _propTypes2.default.string.isRequired,
+  content: _propTypes2.default.objectOf(_propTypes2.default.any).isRequired,
   id: _propTypes2.default.number.isRequired,
   link: _propTypes2.default.string.isRequired,
-  title: _propTypes2.default.string.isRequired,
+  title: _propTypes2.default.objectOf(_propTypes2.default.any).isRequired,
   slug: _propTypes2.default.string.isRequired
 };
 
