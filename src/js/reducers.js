@@ -6,6 +6,7 @@ import {
   RECEIVE_PAGE,
   CHANGE_SEARCH_TERM,
   RECEIVE_SEARCH_RESULTS,
+  SET_ACTIVE_POST,
 } from './actions';
 
 /* Reducer for requesting, receiving, and setting acive categories. */
@@ -21,15 +22,17 @@ function categories(
   switch (action.type) {
     case CHANGE_SEARCH_TERM:
       return Object.assign({}, state, {
-        activeCategory: action.searchTerm === ''
-          ? state.savedActiveCategory
-          : null,
-        savedActiveCategory: state.activeCategory === null
-          ? state.savedActiveCategory
-          : state.activeCategory,
+        activeCategory:
+          action.searchTerm === '' ? state.savedActiveCategory : null,
+        savedActiveCategory:
+          state.activeCategory === null
+            ? state.savedActiveCategory
+            : state.activeCategory,
       });
+
     case REQUEST_CATEGORIES:
       return Object.assign({}, state, { fetching: true, categories: [] });
+
     case RECEIVE_CATEGORIES:
       return Object.assign({}, state, {
         fetching: false,
@@ -37,10 +40,10 @@ function categories(
         activeCategory: action.categories[0].id,
         activeCategoryTitle: action.categories[0].name,
       });
+
     case SET_ACTIVE_CATEGORY:
       return Object.assign({}, state, {
         activeCategory: action.id,
-        activeCategoryTitle: action.title,
       });
     default:
       return state;
@@ -59,14 +62,34 @@ function pages(
   switch (action.type) {
     case RECEIVE_CATEGORIES:
       return Object.assign({}, state, { loaded: false });
+
     case REQUEST_PAGE:
       return Object.assign({}, state, { fetching: true, loaded: true });
+
     case RECEIVE_PAGE:
       return Object.assign({}, state, {
         fetching: false,
         posts: action.posts,
         loaded: true,
+        activePost: null,
       });
+
+    case RECEIVE_SEARCH_RESULTS: {
+      return Object.assign({}, state, {
+        activePost: null,
+      });
+    }
+
+    case SET_ACTIVE_CATEGORY: {
+      return Object.assign({}, state, {
+        activePost: null,
+      });
+    }
+
+    case SET_ACTIVE_POST: {
+      return Object.assign({}, state, { activePost: action.post });
+    }
+
     default:
       return state;
   }
@@ -82,17 +105,20 @@ function search(
   action
 ) {
   switch (action.type) {
-    case REQUEST_PAGE:
+    case REQUEST_PAGE: {
       return Object.assign({}, state, { searchTerm: '' });
-    case CHANGE_SEARCH_TERM:
+    }
+
+    case CHANGE_SEARCH_TERM: {
       return Object.assign({}, state, {
         searchTerm: action.searchTerm,
-        fetching: true,
+        searching: true,
       });
-    case RECEIVE_SEARCH_RESULTS:
-      return Object.assign({}, state, { posts: action.posts, fetching: false });
-    default:
+    }
+
+    default: {
       return state;
+    }
   }
 }
 

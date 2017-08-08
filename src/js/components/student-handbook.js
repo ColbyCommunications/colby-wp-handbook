@@ -1,13 +1,13 @@
 import React from 'react';
 
-import styles from 'colby-scss/modules/student-handbook.scss';
+import styles from './studentHandbook.module.scss';
 
 import Categories from '../containers/categories-container';
 import CurrentPage from '../containers/page-container';
 import SearchInputContainer from '../containers/search-input-container';
 
-const StudentHandbook = () => (
-  <div className={styles.container}>
+const StudentHandbook = () =>
+  (<div className={styles.container}>
     <div className={styles['category-pane']}>
       <SearchInputContainer />
       <Categories />
@@ -15,7 +15,6 @@ const StudentHandbook = () => (
     <div className={styles['page-pane']}>
       <CurrentPage />
     </div>
-  </div>
-);
+  </div>);
 
 export default StudentHandbook;

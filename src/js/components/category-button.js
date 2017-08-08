@@ -3,10 +3,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import styles from 'colby-scss/modules/student-handbook.scss';
+import styles from './studentHandbook.module.scss';
 
-const CategoryButton = ({ active, id, name, onClick }) => (
-  <button
+const CategoryButton = ({ active, id, name, onClick }) =>
+  (<button
     className={[
       styles.category,
       active === true ? styles['category--active'] : '',
@@ -14,9 +14,8 @@ const CategoryButton = ({ active, id, name, onClick }) => (
       .join(' ')
       .trim()}
     dangerouslySetInnerHTML={{ __html: name }}
-    onClick={() => onClick({ id, title: name })}
-  />
-);
+    onClick={() => onClick(id)}
+  />);
 
 CategoryButton.propTypes = {
   active: PropTypes.bool.isRequired,

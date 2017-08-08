@@ -9,6 +9,7 @@ import { Route } from 'react-router-dom';
 import { routerReducer, routerMiddleware } from 'react-router-redux';
 
 import { categories, pages, search } from './reducers';
+import { setActivePost } from './actions';
 import StudentHandbook from './components/student-handbook';
 import ConnectedBrowserRouter from './utils/ConnectedBrowserRouter';
 
@@ -80,7 +81,7 @@ class App extends React.Component {
       {
         categories: {
           categories: this.state.categories,
-          activeCategory: this.state.categories[0],
+          activeCategory: this.state.categories[0].id,
         },
         pages: {
           pages: this.state.pages,
@@ -101,7 +102,28 @@ class App extends React.Component {
           history={this.history}
           basename={`${wp}/communitylife/student-handbook/`}
         >
-          <Route path="/" component={StudentHandbook} />
+          <div>
+            <Route exact path="/" component={StudentHandbook} />
+            <Route
+              path="/:slug"
+              render={(props) => {
+                let pagesArray = [];
+                Object.values(store.getState().pages.pages).forEach((array) => {
+                  pagesArray = pagesArray.concat(array);
+                });
+
+                const activePosts = pagesArray.filter(
+                  (post) => post.slug && post.slug === props.match.params.slug
+                );
+
+                if (activePosts.length) {
+                  store.dispatch(setActivePost(activePosts[0]));
+                }
+
+                return <StudentHandbook />;
+              }}
+            />
+          </div>
         </ConnectedBrowserRouter>
       </Provider>
     );
@@ -109,9 +131,12 @@ class App extends React.Component {
 }
 
 function init() {
-  document.querySelectorAll('[data-student-handbook]').forEach((container) => {
-    render(<App />, container);
-  });
+  Array.prototype.forEach.call(
+    document.querySelectorAll('[data-student-handbook]'),
+    (container) => {
+      render(<App />, container);
+    }
+  );
 }
 
 window.addEventListener('load', init);

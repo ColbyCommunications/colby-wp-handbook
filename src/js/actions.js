@@ -3,11 +3,10 @@ import debounce from 'lodash/debounce';
 const REST_BASE = 'http://author.colby.edu/communitylife/wp-json/wp/v2/';
 
 export const SET_ACTIVE_CATEGORY = 'SET_ACTIVE_CATEGORY';
-export function setActiveCategory({ id, title }) {
+export function setActiveCategory(id) {
   return {
     type: SET_ACTIVE_CATEGORY,
     id,
-    title,
   };
 }
 
@@ -27,10 +26,10 @@ export function receivePage(posts) {
 }
 
 const fetchPageCache = {};
-export function fetchPage({ id, title }) {
+export function fetchPage(id) {
   return (dispatch) => {
     dispatch(requestPage());
-    dispatch(setActiveCategory({ id, title }));
+    dispatch(setActiveCategory(id));
 
     let url = `${REST_BASE}handbook-page?handbook-section=${id}`;
     url = `${url}&per_page=99&orderby=slug&order=asc`;
@@ -82,3 +81,9 @@ export function runSearch(searchTerm) {
     return debouncedSearch(dispatch, url);
   };
 }
+
+export const SET_ACTIVE_POST = 'SET_ACTIVE_POST';
+export const setActivePost = (post) => ({
+  type: SET_ACTIVE_POST,
+  post,
+});

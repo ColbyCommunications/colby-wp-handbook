@@ -16,7 +16,6 @@ function csh_register_handbook_post_type() {
 }
 add_action( 'init', 'csh_register_handbook_post_type' );
 
-
 /**
  * Register the handbook-section taxonomy.
  */

@@ -1,0 +1,83 @@
+@import '~bootstrap/scss/functions';
+@import '~colby-scss/variables';
+@import '~bootstrap/scss/mixins';
+
+$link-color: $blue;
+
+.container {
+  display: flex;
+
+  flex-wrap: wrap;
+  justify-content: space-between;
+}
+
+.category-pane {
+  @media screen and (min-width: map-get($grid-breakpoints, 'md')) {
+    padding-right: 1.5rem;
+
+    @include make-col(3);
+  }
+}
+
+.page-pane {
+  @media screen and (min-width: map-get($grid-breakpoints, 'md')) {
+    padding-left: 1.5rem;
+
+    @include make-col(9);
+  }
+}
+
+.category {
+  z-index: 0;
+  padding-left: 0;
+  outline: none;
+  border: none;
+  background-color: white;
+  box-shadow: none;
+  color: $blue;
+  text-align: left;
+  white-space: normal;
+
+  flex-wrap: wrap;
+
+  &:hover {
+    outline: none;
+    border: none;
+    background-color: white;
+    box-shadow: none;
+    color: darken($blue, 10%);
+    text-decoration: underline;
+  }
+
+  &:focus,
+  &:active {
+    z-index: 1;
+    outline: none;
+  }
+}
+
+.post-title {
+  margin-bottom: .375em;
+  text-transform: none;
+  font-weight: 400;
+  font-size: 1.26rem;
+}
+
+.post {
+  margin-bottom: 1.5rem;
+  padding-bottom: .25rem;
+  border-bottom: 1px solid rgba($black, .1);
+
+  &:last-of-type {
+    border-bottom-width: 0;
+  }
+
+  section {
+    padding-bottom: 0;
+  }
+
+  h3 {
+    font-size: 1.06rem;
+    font-size: 400;
+  }
+}
