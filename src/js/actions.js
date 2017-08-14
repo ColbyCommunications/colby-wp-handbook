@@ -1,4 +1,4 @@
-import debounce from 'lodash/debounce';
+import _ from 'lodash';
 
 export const SET_ACTIVE_CATEGORY = 'SET_ACTIVE_CATEGORY';
 export function setActiveCategory(id) {
@@ -66,7 +66,7 @@ const search = (dispatch, url) =>
     searchCache[url] = posts;
     dispatch(receiveSearchResults(posts));
   });
-const debouncedSearch = debounce(search, 200);
+const debouncedSearch = _.debounce(search, 200);
 export function runSearch(searchTerm) {
   return (dispatch) => {
     dispatch(changeSearchTerm(searchTerm));

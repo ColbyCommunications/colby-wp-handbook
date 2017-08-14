@@ -4,7 +4,8 @@
 
 $link-color: $blue;
 
-.container {
+:global(.student-handbook-container__title) {
+  text-align: center;
 }
 
 .category-pane {
