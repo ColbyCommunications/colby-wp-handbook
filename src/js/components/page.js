@@ -1,6 +1,7 @@
 /* eslint react/no-danger: 0 */
 import React from 'react';
 import PropTypes from 'prop-types';
+import { Link } from 'react-router-dom';
 
 import AnimatedEllipsis from 'colby-react-animated-ellipsis';
 
@@ -27,7 +28,6 @@ const Page = ({
   if (activePost !== null) {
     return (
       <div className={styles.page}>
-        <h2 dangerouslySetInnerHTML={activePost.title.rendered} />
         <Post {...activePost} />
       </div>
     );
@@ -45,7 +45,17 @@ const Page = ({
   return (
     <div className={styles.page}>
       {title}
-      {posts.map((post) => <Post key={post.id} {...post} />)}
+      {searchTerm !== ''
+        ? posts.map((post) =>
+          (<div>
+            <Link
+              key={post.id}
+              to={post.slug}
+              dangerouslySetInnerHTML={{ __html: post.title.rendered }}
+            />
+          </div>)
+          )
+        : posts.map((post) => <Post key={post.id} {...post} />)}
     </div>
   );
 };

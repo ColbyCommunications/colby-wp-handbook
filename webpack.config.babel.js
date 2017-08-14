@@ -1,13 +1,16 @@
+import ExtractTextPlugin from 'extract-text-webpack-plugin';
 import path from 'path';
 import webpack from 'webpack';
-import ExtractTextPlugin from 'extract-text-webpack-plugin';
+import { BundleAnalyzerPlugin } from 'webpack-bundle-analyzer';
+
 import packageJson from './package.json';
 
 const main = () => {
   const PROD = process.argv.includes('-p');
-
+  const watching = process.argv.includes('--watch');
   const min = PROD ? '.min' : '';
-
+  const entry = './src/js/index.js';
+  const filename = `${packageJson.name}${min}.js`;
   const plugins = [new ExtractTextPlugin(`${packageJson.name}${min}.css`)];
 
   if (PROD) {
@@ -20,18 +23,17 @@ const main = () => {
     );
   }
 
+  if (!watching) {
+    plugins.push(new BundleAnalyzerPlugin({ analyzerMode: 'static' }));
+  }
+
   return {
-    entry: {
-      main: ['./src/js/index.js'],
-    },
+    entry,
     output: {
-      filename: `${packageJson.name}${min}.js`,
+      filename,
       path: path.resolve(__dirname, 'dist'),
     },
     plugins,
-    resolve: {
-      modules: [path.resolve(__dirname, 'node_modules'), 'node_modules'],
-    },
     module: {
       rules: [
         {
@@ -39,9 +41,7 @@ const main = () => {
           use: [
             {
               loader: 'babel-loader',
-              options: {
-                presets: ['react', 'es2015', 'stage-1'],
-              },
+              options: { presets: ['react', 'es2015', 'stage-1'] },
             },
           ],
         },
@@ -57,14 +57,20 @@ const main = () => {
                   localIdentName: '[local]--[hash:base64:5]',
                 },
               },
-              'postcss-loader',
-              'sass-loader',
+              { loader: 'postcss-loader' },
+              { loader: 'sass-loader' },
             ],
           }),
         },
       ],
     },
-    externals: { React: 'react', ReactDOM: 'react-dom' },
+    externals: {
+      'prop-types': 'PropTypes',
+      'react': 'React',
+      'react-dom': 'ReactDOM',
+      'lodash': '_',
+    },
+    target: 'web',
     devtool: PROD ? false : 'source-maps',
   };
 };

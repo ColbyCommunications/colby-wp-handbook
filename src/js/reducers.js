@@ -116,6 +116,13 @@ function search(
       });
     }
 
+    case RECEIVE_SEARCH_RESULTS: {
+      return Object.assign({}, state, {
+        posts: action.posts,
+        searching: false,
+      });
+    }
+
     default: {
       return state;
     }

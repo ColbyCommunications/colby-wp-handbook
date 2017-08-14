@@ -1,7 +1,5 @@
 import debounce from 'lodash/debounce';
 
-const REST_BASE = 'http://author.colby.edu/communitylife/wp-json/wp/v2/';
-
 export const SET_ACTIVE_CATEGORY = 'SET_ACTIVE_CATEGORY';
 export function setActiveCategory(id) {
   return {
@@ -31,7 +29,8 @@ export function fetchPage(id) {
     dispatch(requestPage());
     dispatch(setActiveCategory(id));
 
-    let url = `${REST_BASE}handbook-page?handbook-section=${id}`;
+    let url = `${window.COLBY_HANDBOOK_REST_URL}handbook-page`;
+    url = `${url}?handbook-section=${id}`;
     url = `${url}&per_page=99&orderby=slug&order=asc`;
 
     if (url in fetchPageCache) {
@@ -72,7 +71,8 @@ export function runSearch(searchTerm) {
   return (dispatch) => {
     dispatch(changeSearchTerm(searchTerm));
 
-    const url = `${REST_BASE}handbook-page?search=${searchTerm}`;
+    let url = `${window.COLBY_HANDBOOK_REST_URL}handbook-page`;
+    url = `${url}?search=${searchTerm}`;
 
     if (url in searchCache) {
       return dispatch(receiveSearchResults(searchCache[url]));

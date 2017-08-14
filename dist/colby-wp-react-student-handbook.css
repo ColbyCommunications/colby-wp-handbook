@@ -1,48 +1,47 @@
-.container--1Cuyi {
-  display: -webkit-box;
-  display: -ms-flexbox;
-  display: flex;
-  -ms-flex-wrap: wrap;
-      flex-wrap: wrap;
-  -webkit-box-pack: justify;
-      -ms-flex-pack: justify;
-          justify-content: space-between; }
+.category-pane--28Tvo {
+  padding-top: 1.5rem;
+  padding-bottom: 1.5rem; }
+  @media screen and (min-width: 768px) {
+    .category-pane--28Tvo {
+      padding-right: 1.5rem;
+      -webkit-box-flex: 0;
+          -ms-flex: 0 0 25%;
+              flex: 0 0 25%;
+      max-width: 25%; } }
 
-@media screen and (min-width: 768px) {
-  .category-pane--28Tvo {
-    padding-right: 1.5rem;
-    -webkit-box-flex: 0;
-        -ms-flex: 0 0 25%;
-            flex: 0 0 25%;
-    max-width: 25%; } }
-
-@media screen and (min-width: 768px) {
-  .page-pane--3lkWf {
-    padding-left: 1.5rem;
-    -webkit-box-flex: 0;
-        -ms-flex: 0 0 75%;
-            flex: 0 0 75%;
-    max-width: 75%; } }
+.page-pane--3lkWf {
+  padding-top: 1.5rem;
+  padding-bottom: 1.5rem; }
+  @media screen and (min-width: 768px) {
+    .page-pane--3lkWf {
+      padding-left: 1.5rem;
+      -webkit-box-flex: 0;
+          -ms-flex: 0 0 75%;
+              flex: 0 0 75%;
+      max-width: 75%; } }
 
 .category--1bzpI {
   z-index: 0;
   padding-left: 0;
   outline: none;
   border: none;
-  background-color: white;
+  background-color: transparent;
   -webkit-box-shadow: none;
           box-shadow: none;
   color: #002878;
   text-align: left;
   white-space: normal;
+  display: block;
+  font-size: .891rem;
+  text-transform: uppercase;
   -ms-flex-wrap: wrap;
       flex-wrap: wrap; }
   .category--1bzpI:hover {
     outline: none;
     border: none;
-    background-color: white;
     -webkit-box-shadow: none;
             box-shadow: none;
+    background-color: transparent;
     color: #001745;
     text-decoration: underline; }
   .category--1bzpI:focus, .category--1bzpI:active {
@@ -66,27 +65,34 @@
   .post--sokNo h3 {
     font-size: 1.06rem;
     font-size: 400; }
-@-webkit-keyframes blink--1fCF9 {
+
+.page--loading--1xsiZ {
+  width: 100%;
+  padding: 3rem;
+  text-align: center; }
+  .page--loading--1xsiZ span {
+    font-size: 3rem; }
+@-webkit-keyframes blink--1JEWG {
   50% {
     color: transparent; } }
 
-@keyframes blink--1fCF9 {
+@keyframes blink--1JEWG {
   50% {
     color: transparent; } }
 
-.ellipsis--31Bbz span {
-  -webkit-animation-name: blink--1fCF9;
-          animation-name: blink--1fCF9;
+.ellipsis--14CMX span {
+  -webkit-animation-name: blink--1JEWG;
+          animation-name: blink--1JEWG;
   -webkit-animation-duration: 1s;
           animation-duration: 1s;
   -webkit-animation-iteration-count: infinite;
           animation-iteration-count: infinite; }
 
-.ellipsis--31Bbz span:nth-of-type(2) {
+.ellipsis--14CMX span:nth-of-type(2) {
   -webkit-animation-delay: 250ms;
           animation-delay: 250ms; }
 
-.ellipsis--31Bbz span:nth-of-type(3) {
+.ellipsis--14CMX span:nth-of-type(3) {
   -webkit-animation-delay: 500ms;
           animation-delay: 500ms; }
 .container--31nCv {

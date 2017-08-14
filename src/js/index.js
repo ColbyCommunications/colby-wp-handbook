@@ -13,8 +13,6 @@ import { setActivePost } from './actions';
 import StudentHandbook from './components/student-handbook';
 import ConnectedBrowserRouter from './utils/ConnectedBrowserRouter';
 
-const REST_BASE = 'http://author.colby.edu/communitylife/wp-json/wp/v2/';
-
 class App extends React.Component {
   constructor(props) {
     super(props);
@@ -34,7 +32,7 @@ class App extends React.Component {
   }
 
   fetchCategories() {
-    let url = `${REST_BASE}handbook-section?per_page=99`;
+    let url = `${window.COLBY_HANDBOOK_REST_URL}handbook-section?per_page=99`;
     url = `${url}&orderby=slug&order=asc`;
 
     return fetch(url)
@@ -45,7 +43,7 @@ class App extends React.Component {
   }
 
   fetchPages() {
-    let url = `${REST_BASE}handbook-page`;
+    let url = `${window.COLBY_HANDBOOK_REST_URL}handbook-page`;
     url = `${url}?per_page=99&orderby=slug&order=asc`;
 
     fetch(url).then((response) => response.json()).then((receivedPages) => {
@@ -100,9 +98,9 @@ class App extends React.Component {
       <Provider store={store}>
         <ConnectedBrowserRouter
           history={this.history}
-          basename={`${wp}/communitylife/student-handbook/`}
+          basename={`${wp}/communitylife/handbook/`}
         >
-          <div>
+          <div className="container">
             <Route exact path="/" component={StudentHandbook} />
             <Route
               path="/:slug"

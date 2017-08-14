@@ -7,7 +7,7 @@ import CurrentPage from '../containers/page-container';
 import SearchInputContainer from '../containers/search-input-container';
 
 const StudentHandbook = () =>
-  (<div className={styles.container}>
+  (<div className={`${styles.container} row`}>
     <div className={styles['category-pane']}>
       <SearchInputContainer />
       <Categories />
