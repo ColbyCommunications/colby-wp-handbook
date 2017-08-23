@@ -5,11 +5,21 @@ add_action( 'wp_enqueue_scripts', function() {
 		$dist = plugin_dir_url( __DIR__ . '/../../index.php' ) . 'dist';
 		$min = PROD === true ? '.min' : '';
 
-		wp_enqueue_style( 'student-handbook', "$dist/colby-wp-react-student-handbook$min.css" );
-		wp_enqueue_script(
+		$package_json = json_decode( file_get_contents( __DIR__ . '/../../package.json' ) )
+			?: (object) [ 'version' => '1.0.1' ];
+
+		wp_enqueue_style(
 			'student-handbook',
-			"$dist/colby-wp-react-student-handbook$min.js",
-			['react', 'react-dom', 'lodash', 'prop-types']
+			"$dist/{$package_json->name}$min.css",
+			['colby-bootstrap'],
+			$package_json->version
+		);
+		wp_enqueue_script(
+			$package_json->name,
+			"$dist/{$package_json->name}$min.js",
+			['react', 'react-dom', 'lodash', 'prop-types'],
+			$package_json->version,
+			true
 		);
 	}
 } );
