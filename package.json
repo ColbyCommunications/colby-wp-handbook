@@ -1,6 +1,6 @@
 {
   "name": "colby-wp-react-student-handbook",
-  "version": "1.0.5",
+  "version": "1.0.6",
   "description": "A React/Redux/WP REST API feature for displaying the Colby College student handbook",
   "main": "src/index.js",
   "repository": {
