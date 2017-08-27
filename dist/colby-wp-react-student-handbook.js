@@ -103,7 +103,7 @@ var _Route2 = __webpack_require__(29);
 
 var _Route3 = _interopRequireDefault(_Route2);
 
-var _Router2 = __webpack_require__(16);
+var _Router2 = __webpack_require__(15);
 
 var _Router3 = _interopRequireDefault(_Router2);
 
@@ -115,7 +115,7 @@ var _Switch2 = __webpack_require__(74);
 
 var _Switch3 = _interopRequireDefault(_Switch2);
 
-var _matchPath2 = __webpack_require__(17);
+var _matchPath2 = __webpack_require__(16);
 
 var _matchPath3 = _interopRequireDefault(_matchPath2);
 
@@ -625,130 +625,10 @@ exports.withRouter = _withRouter3.default;
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin
-module.exports = {"category-pane":"category-pane--28Tvo","page-pane":"page-pane--3lkWf","category":"category--1bzpI","post-title":"post-title--11hO8","post":"post--sokNo","page--loading":"page--loading--1xsiZ"};
+module.exports = {"category-pane":"category-pane--28Tvo","page-pane":"page-pane--3lkWf","category":"category--1bzpI","category--active":"category--active--W-1DI","post-title":"post-title--11hO8","post":"post--sokNo","page--loading":"page--loading--1xsiZ"};
 
 /***/ }),
 /* 10 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.setActivePost = exports.SET_ACTIVE_POST = exports.RECEIVE_SEARCH_RESULTS = exports.CHANGE_SEARCH_TERM = exports.RECEIVE_PAGE = exports.REQUEST_PAGE = exports.SET_ACTIVE_CATEGORY = undefined;
-exports.setActiveCategory = setActiveCategory;
-exports.requestPage = requestPage;
-exports.receivePage = receivePage;
-exports.fetchPage = fetchPage;
-exports.changeSearchTerm = changeSearchTerm;
-exports.receiveSearchResults = receiveSearchResults;
-exports.runSearch = runSearch;
-
-var _lodash = __webpack_require__(92);
-
-var _lodash2 = _interopRequireDefault(_lodash);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-var SET_ACTIVE_CATEGORY = exports.SET_ACTIVE_CATEGORY = 'SET_ACTIVE_CATEGORY';
-function setActiveCategory(id) {
-  return {
-    type: SET_ACTIVE_CATEGORY,
-    id: id
-  };
-}
-
-var REQUEST_PAGE = exports.REQUEST_PAGE = 'REQUEST_PAGE';
-function requestPage() {
-  return {
-    type: REQUEST_PAGE
-  };
-}
-
-var RECEIVE_PAGE = exports.RECEIVE_PAGE = 'RECEIVE_PAGE';
-function receivePage(posts) {
-  return {
-    type: RECEIVE_PAGE,
-    posts: posts
-  };
-}
-
-var fetchPageCache = {};
-function fetchPage(id) {
-  return function (dispatch) {
-    dispatch(requestPage());
-    dispatch(setActiveCategory(id));
-
-    var url = window.COLBY_HANDBOOK_REST_URL + 'handbook-page';
-    url = url + '?handbook-section=' + id;
-    url = url + '&per_page=99&orderby=slug&order=asc';
-
-    if (url in fetchPageCache) {
-      return dispatch(receivePage(fetchPageCache[url]));
-    }
-
-    return fetch(url).then(function (response) {
-      return response.json();
-    }).then(function (posts) {
-      fetchPageCache[url] = posts;
-      dispatch(receivePage(posts));
-    });
-  };
-}
-
-var CHANGE_SEARCH_TERM = exports.CHANGE_SEARCH_TERM = 'CHANGE_SEARCH_TERM';
-function changeSearchTerm(searchTerm) {
-  return {
-    type: CHANGE_SEARCH_TERM,
-    searchTerm: searchTerm
-  };
-}
-
-var RECEIVE_SEARCH_RESULTS = exports.RECEIVE_SEARCH_RESULTS = 'RECEIVE_SEARCH_RESULTS';
-function receiveSearchResults(posts) {
-  return {
-    type: RECEIVE_SEARCH_RESULTS,
-    posts: posts
-  };
-}
-
-var searchCache = {};
-var search = function search(dispatch, url) {
-  return fetch(url).then(function (response) {
-    return response.json();
-  }).then(function (posts) {
-    searchCache[url] = posts;
-    dispatch(receiveSearchResults(posts));
-  });
-};
-var debouncedSearch = _lodash2.default.debounce(search, 200);
-function runSearch(searchTerm) {
-  return function (dispatch) {
-    dispatch(changeSearchTerm(searchTerm));
-
-    var url = window.COLBY_HANDBOOK_REST_URL + 'handbook-page';
-    url = url + '?search=' + searchTerm;
-
-    if (url in searchCache) {
-      return dispatch(receiveSearchResults(searchCache[url]));
-    }
-
-    return debouncedSearch(dispatch, url);
-  };
-}
-
-var SET_ACTIVE_POST = exports.SET_ACTIVE_POST = 'SET_ACTIVE_POST';
-var setActivePost = exports.setActivePost = function setActivePost(post) {
-  return {
-    type: SET_ACTIVE_POST,
-    post: post
-  };
-};
-
-/***/ }),
-/* 11 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -842,7 +722,7 @@ var locationsAreEqual = exports.locationsAreEqual = function locationsAreEqual(a
 };
 
 /***/ }),
-/* 12 */
+/* 11 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -935,7 +815,7 @@ var createTransitionManager = function createTransitionManager() {
 exports.default = createTransitionManager;
 
 /***/ }),
-/* 13 */
+/* 12 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1018,7 +898,7 @@ function isPlainObject(value) {
 exports.default = isPlainObject;
 
 /***/ }),
-/* 14 */
+/* 13 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1048,7 +928,7 @@ try {
 module.exports = g;
 
 /***/ }),
-/* 15 */
+/* 14 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1081,7 +961,7 @@ function warning(message) {
 }
 
 /***/ }),
-/* 16 */
+/* 15 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1231,7 +1111,7 @@ Router.childContextTypes = {
 exports.default = Router;
 
 /***/ }),
-/* 17 */
+/* 16 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1314,6 +1194,126 @@ var matchPath = function matchPath(pathname) {
 exports.default = matchPath;
 
 /***/ }),
+/* 17 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.setActivePost = exports.SET_ACTIVE_POST = exports.RECEIVE_SEARCH_RESULTS = exports.CHANGE_SEARCH_TERM = exports.RECEIVE_PAGE = exports.REQUEST_PAGE = exports.SET_ACTIVE_CATEGORY = undefined;
+exports.setActiveCategory = setActiveCategory;
+exports.requestPage = requestPage;
+exports.receivePage = receivePage;
+exports.fetchPage = fetchPage;
+exports.changeSearchTerm = changeSearchTerm;
+exports.receiveSearchResults = receiveSearchResults;
+exports.runSearch = runSearch;
+
+var _lodash = __webpack_require__(92);
+
+var _lodash2 = _interopRequireDefault(_lodash);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var SET_ACTIVE_CATEGORY = exports.SET_ACTIVE_CATEGORY = 'SET_ACTIVE_CATEGORY';
+function setActiveCategory(id) {
+  return {
+    type: SET_ACTIVE_CATEGORY,
+    id: id
+  };
+}
+
+var REQUEST_PAGE = exports.REQUEST_PAGE = 'REQUEST_PAGE';
+function requestPage() {
+  return {
+    type: REQUEST_PAGE
+  };
+}
+
+var RECEIVE_PAGE = exports.RECEIVE_PAGE = 'RECEIVE_PAGE';
+function receivePage(posts) {
+  return {
+    type: RECEIVE_PAGE,
+    posts: posts
+  };
+}
+
+var fetchPageCache = {};
+function fetchPage(id) {
+  return function (dispatch) {
+    dispatch(requestPage());
+    dispatch(setActiveCategory(id));
+
+    var url = window.COLBY_HANDBOOK_REST_URL + 'handbook-page';
+    url = url + '?handbook-section=' + id;
+    url = url + '&per_page=99&orderby=slug&order=asc';
+
+    if (url in fetchPageCache) {
+      return dispatch(receivePage(fetchPageCache[url]));
+    }
+
+    return fetch(url).then(function (response) {
+      return response.json();
+    }).then(function (posts) {
+      fetchPageCache[url] = posts;
+      dispatch(receivePage(posts));
+    });
+  };
+}
+
+var CHANGE_SEARCH_TERM = exports.CHANGE_SEARCH_TERM = 'CHANGE_SEARCH_TERM';
+function changeSearchTerm(searchTerm) {
+  return {
+    type: CHANGE_SEARCH_TERM,
+    searchTerm: searchTerm
+  };
+}
+
+var RECEIVE_SEARCH_RESULTS = exports.RECEIVE_SEARCH_RESULTS = 'RECEIVE_SEARCH_RESULTS';
+function receiveSearchResults(posts) {
+  return {
+    type: RECEIVE_SEARCH_RESULTS,
+    posts: posts
+  };
+}
+
+var searchCache = {};
+var search = function search(dispatch, url) {
+  return fetch(url).then(function (response) {
+    return response.json();
+  }).then(function (posts) {
+    searchCache[url] = posts;
+    dispatch(receiveSearchResults(posts));
+  });
+};
+var debouncedSearch = _lodash2.default.debounce(search, 200);
+function runSearch(searchTerm) {
+  return function (dispatch) {
+    dispatch(changeSearchTerm(searchTerm));
+
+    var url = window.COLBY_HANDBOOK_REST_URL + 'handbook-page';
+    url = url + '?search=' + searchTerm;
+
+    if (url in searchCache) {
+      return dispatch(receiveSearchResults(searchCache[url]));
+    }
+
+    return debouncedSearch(dispatch, url);
+  };
+}
+
+var SET_ACTIVE_POST = exports.SET_ACTIVE_POST = 'SET_ACTIVE_POST';
+var setActivePost = exports.setActivePost = function setActivePost(post) {
+  return {
+    type: SET_ACTIVE_POST,
+    post: post
+  };
+};
+
+/***/ }),
 /* 18 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -1348,11 +1348,11 @@ var _invariant = __webpack_require__(5);
 
 var _invariant2 = _interopRequireDefault(_invariant);
 
-var _LocationUtils = __webpack_require__(11);
+var _LocationUtils = __webpack_require__(10);
 
 var _PathUtils = __webpack_require__(6);
 
-var _createTransitionManager = __webpack_require__(12);
+var _createTransitionManager = __webpack_require__(11);
 
 var _createTransitionManager2 = _interopRequireDefault(_createTransitionManager);
 
@@ -1771,7 +1771,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 
 exports.default = createStore;
 
-var _isPlainObject = __webpack_require__(13);
+var _isPlainObject = __webpack_require__(12);
 
 var _isPlainObject2 = _interopRequireDefault(_isPlainObject);
 
@@ -2597,11 +2597,11 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = verifyPlainObject;
 
-var _isPlainObject = __webpack_require__(13);
+var _isPlainObject = __webpack_require__(12);
 
 var _isPlainObject2 = _interopRequireDefault(_isPlainObject);
 
-var _warning = __webpack_require__(15);
+var _warning = __webpack_require__(14);
 
 var _warning2 = _interopRequireDefault(_warning);
 
@@ -2638,7 +2638,7 @@ var _propTypes = __webpack_require__(1);
 
 var _propTypes2 = _interopRequireDefault(_propTypes);
 
-var _matchPath = __webpack_require__(17);
+var _matchPath = __webpack_require__(16);
 
 var _matchPath2 = _interopRequireDefault(_matchPath);
 
@@ -3121,7 +3121,7 @@ var _react = __webpack_require__(0);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _ellipsis = __webpack_require__(100);
+var _ellipsis = __webpack_require__(101);
 
 var _ellipsis2 = _interopRequireDefault(_ellipsis);
 
@@ -3184,13 +3184,13 @@ var _reactRouterRedux = __webpack_require__(31);
 
 var _reducers = __webpack_require__(91);
 
-var _actions = __webpack_require__(10);
+var _actions = __webpack_require__(17);
 
 var _studentHandbook = __webpack_require__(93);
 
 var _studentHandbook2 = _interopRequireDefault(_studentHandbook);
 
-var _ConnectedBrowserRouter = __webpack_require__(107);
+var _ConnectedBrowserRouter = __webpack_require__(108);
 
 var _ConnectedBrowserRouter2 = _interopRequireDefault(_ConnectedBrowserRouter);
 
@@ -3294,6 +3294,7 @@ var App = function (_React$Component) {
       }, _redux.applyMiddleware.apply(undefined, middlewares));
 
       var wp = location.href.indexOf('localhost') === -1 ? '' : '/wp';
+      var siteName = location.href.indexOf('localhost') === -1 ? 'studentlife' : 'communitylife';
 
       return _react2.default.createElement(
         _reactRedux.Provider,
@@ -3302,14 +3303,25 @@ var App = function (_React$Component) {
           _ConnectedBrowserRouter2.default,
           {
             history: this.history,
-            basename: wp + '/studentlife/handbook/'
+            basename: wp + '/' + siteName
           },
           _react2.default.createElement(
             'div',
             { className: 'container' },
-            _react2.default.createElement(_reactRouterDom.Route, { exact: true, path: '/', component: _studentHandbook2.default }),
+            _react2.default.createElement(_reactRouterDom.Route, { exact: true, path: '/handbook', component: _studentHandbook2.default }),
             _react2.default.createElement(_reactRouterDom.Route, {
-              path: '/:slug',
+              path: '/handbook-section/:slug',
+              render: function render(props) {
+                var activeCategory = Object.values(store.getState().categories.categories).filter(function (category) {
+                  return category.slug === props.match.params.slug;
+                })[0];
+
+                store.dispatch((0, _actions.setActiveCategory)(activeCategory.id));
+                return _react2.default.createElement(_studentHandbook2.default, null);
+              }
+            }),
+            _react2.default.createElement(_reactRouterDom.Route, {
+              path: '/handbook/:slug',
               render: function render(props) {
                 var pagesArray = [];
                 Object.values(store.getState().pages.pages).forEach(function (array) {
@@ -3570,7 +3582,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 var freeGlobal = (typeof global === 'undefined' ? 'undefined' : _typeof(global)) == 'object' && global && global.Object === Object && global;
 
 exports.default = freeGlobal;
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(14)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(13)))
 
 /***/ }),
 /* 42 */
@@ -3802,7 +3814,7 @@ if (typeof self !== 'undefined') {
 
 var result = (0, _ponyfill2['default'])(root);
 exports['default'] = result;
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(14), __webpack_require__(49)(module)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(13), __webpack_require__(49)(module)))
 
 /***/ }),
 /* 49 */
@@ -3877,7 +3889,7 @@ exports.default = combineReducers;
 
 var _createStore = __webpack_require__(21);
 
-var _isPlainObject = __webpack_require__(13);
+var _isPlainObject = __webpack_require__(12);
 
 var _isPlainObject2 = _interopRequireDefault(_isPlainObject);
 
@@ -4202,7 +4214,7 @@ var _propTypes2 = _interopRequireDefault(_propTypes);
 
 var _PropTypes = __webpack_require__(25);
 
-var _warning = __webpack_require__(15);
+var _warning = __webpack_require__(14);
 
 var _warning2 = _interopRequireDefault(_warning);
 
@@ -4942,7 +4954,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = verifySubselectors;
 
-var _warning = __webpack_require__(15);
+var _warning = __webpack_require__(14);
 
 var _warning2 = _interopRequireDefault(_warning);
 
@@ -5257,7 +5269,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
         r = e.getState;return "function" == typeof t || "function" == typeof r ? S()({ dispatch: t, getState: r }) : void console.error("\n[redux-logger v3] BREAKING CHANGE\n[redux-logger v3] Since 3.0.0 redux-logger exports by default logger with default settings.\n[redux-logger v3] Change\n[redux-logger v3] import createLogger from 'redux-logger'\n[redux-logger v3] to\n[redux-logger v3] import { createLogger } from 'redux-logger'\n");
   };e.defaults = L, e.createLogger = S, e.logger = T, e.default = T, Object.defineProperty(e, "__esModule", { value: !0 });
 });
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(14)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(13)))
 
 /***/ }),
 /* 66 */
@@ -5367,7 +5379,7 @@ var _createMemoryHistory = __webpack_require__(68);
 
 var _createMemoryHistory2 = _interopRequireDefault(_createMemoryHistory);
 
-var _Router = __webpack_require__(16);
+var _Router = __webpack_require__(15);
 
 var _Router2 = _interopRequireDefault(_Router);
 
@@ -5460,9 +5472,9 @@ var _warning2 = _interopRequireDefault(_warning);
 
 var _PathUtils = __webpack_require__(6);
 
-var _LocationUtils = __webpack_require__(11);
+var _LocationUtils = __webpack_require__(10);
 
-var _createTransitionManager = __webpack_require__(12);
+var _createTransitionManager = __webpack_require__(11);
 
 var _createTransitionManager2 = _interopRequireDefault(_createTransitionManager);
 
@@ -6306,7 +6318,7 @@ var _propTypes2 = _interopRequireDefault(_propTypes);
 
 var _PathUtils = __webpack_require__(6);
 
-var _Router = __webpack_require__(16);
+var _Router = __webpack_require__(15);
 
 var _Router2 = _interopRequireDefault(_Router);
 
@@ -6515,7 +6527,7 @@ var _warning = __webpack_require__(4);
 
 var _warning2 = _interopRequireDefault(_warning);
 
-var _matchPath = __webpack_require__(17);
+var _matchPath = __webpack_require__(16);
 
 var _matchPath2 = _interopRequireDefault(_matchPath);
 
@@ -6834,11 +6846,11 @@ var _invariant = __webpack_require__(5);
 
 var _invariant2 = _interopRequireDefault(_invariant);
 
-var _LocationUtils = __webpack_require__(11);
+var _LocationUtils = __webpack_require__(10);
 
 var _PathUtils = __webpack_require__(6);
 
-var _createTransitionManager = __webpack_require__(12);
+var _createTransitionManager = __webpack_require__(11);
 
 var _createTransitionManager2 = _interopRequireDefault(_createTransitionManager);
 
@@ -7579,7 +7591,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.search = exports.pages = exports.categories = undefined;
 
-var _actions = __webpack_require__(10);
+var _actions = __webpack_require__(17);
 
 /* Reducer for requesting, receiving, and setting acive categories. */
 function categories() {
@@ -7737,11 +7749,11 @@ var _categoriesContainer = __webpack_require__(94);
 
 var _categoriesContainer2 = _interopRequireDefault(_categoriesContainer);
 
-var _pageContainer = __webpack_require__(98);
+var _pageContainer = __webpack_require__(99);
 
 var _pageContainer2 = _interopRequireDefault(_pageContainer);
 
-var _searchInputContainer = __webpack_require__(102);
+var _searchInputContainer = __webpack_require__(103);
 
 var _searchInputContainer2 = _interopRequireDefault(_searchInputContainer);
 
@@ -7834,7 +7846,8 @@ var Categories = function Categories(_ref) {
       return _react2.default.createElement(_categoryButtonContainer2.default, {
         key: category.id,
         id: category.id,
-        name: category.name
+        name: category.name,
+        slug: category.slug
       });
     })
   );
@@ -7867,25 +7880,17 @@ var _categoryButton = __webpack_require__(97);
 
 var _categoryButton2 = _interopRequireDefault(_categoryButton);
 
-var _actions = __webpack_require__(10);
-
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var mapStateToProps = function mapStateToProps(state, ownProps) {
   return {
-    active: state.categories.activeCategory === ownProps.id
+    active: state.categories.activeCategory === ownProps.id,
+    pages: state.pages.pages[ownProps.id],
+    activePost: state.pages.activePost === null ? null : state.pages.activePost.id
   };
 };
 
-var mapDispatchToProps = function mapDispatchToProps(dispatch) {
-  return {
-    onClick: function onClick(id) {
-      return dispatch((0, _actions.fetchPage)(id));
-    }
-  };
-};
-
-var CategoryButtonContainer = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(_categoryButton2.default);
+var CategoryButtonContainer = (0, _reactRedux.connect)(mapStateToProps)(_categoryButton2.default);
 
 exports.default = CategoryButtonContainer;
 
@@ -7910,40 +7915,210 @@ var _propTypes2 = _interopRequireDefault(_propTypes);
 
 var _reactRouterDom = __webpack_require__(8);
 
+var _smoothscroll = __webpack_require__(98);
+
+var _smoothscroll2 = _interopRequireDefault(_smoothscroll);
+
 var _studentHandbookModule = __webpack_require__(9);
 
 var _studentHandbookModule2 = _interopRequireDefault(_studentHandbookModule);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-/* eslint react/no-danger: 0 */
-
 var CategoryButton = function CategoryButton(_ref) {
   var active = _ref.active,
       id = _ref.id,
       name = _ref.name,
-      _onClick = _ref.onClick;
-  return _react2.default.createElement(_reactRouterDom.Link, {
-    to: '/',
-    className: ['btn', 'btn-primary', _studentHandbookModule2.default.category, active === true ? _studentHandbookModule2.default['category--active'] : ''].join(' ').trim(),
-    dangerouslySetInnerHTML: { __html: name },
-    onClick: function onClick() {
-      return _onClick(id);
-    }
-  });
-};
+      slug = _ref.slug,
+      pages = _ref.pages,
+      activePost = _ref.activePost;
+  return _react2.default.createElement(
+    'div',
+    null,
+    _react2.default.createElement(_reactRouterDom.Link, {
+      to: '/handbook-section/' + slug,
+      onClick: function onClick() {
+        return (0, _smoothscroll2.default)(document.querySelector('[data-student-handbook]'));
+      },
+      className: ['btn', 'btn-primary', _studentHandbookModule2.default.category, active === true ? _studentHandbookModule2.default['category--active'] : ''].join(' ').trim(),
+      dangerouslySetInnerHTML: { __html: name }
+    }),
+    active ? _react2.default.createElement(
+      'div',
+      { className: 'mb-2' },
+      pages.map(function (page) {
+        return _react2.default.createElement(
+          'div',
+          {
+            key: page.id,
+            className: 'small pl-2 pb-1',
+            style: { fontWeight: page.id === activePost ? '600' : '400' }
+          },
+          _react2.default.createElement(_reactRouterDom.Link, {
+            onClick: function onClick() {
+              return (0, _smoothscroll2.default)(document.querySelector('[data-student-handbook]'));
+            },
+            to: '/handbook/' + page.slug,
+            dangerouslySetInnerHTML: { __html: page.title.rendered }
+          })
+        );
+      })
+    ) : null
+  );
+}; /* eslint react/no-danger: 0 */
 
 CategoryButton.propTypes = {
   active: _propTypes2.default.bool.isRequired,
+  activePost: _propTypes2.default.number,
   id: _propTypes2.default.number.isRequired,
   name: _propTypes2.default.string.isRequired,
-  onClick: _propTypes2.default.func.isRequired
+  pages: _propTypes2.default.arrayOf(_propTypes2.default.object).isRequired,
+  slug: _propTypes2.default.string.isRequired
+};
+
+CategoryButton.defaultProps = {
+  activePost: null
 };
 
 exports.default = CategoryButton;
 
 /***/ }),
 /* 98 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_RESULT__;
+
+var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
+
+(function (root, smoothScroll) {
+    'use strict';
+
+    // Support RequireJS and CommonJS/NodeJS module formats.
+    // Attach smoothScroll to the `window` when executed as a <script>.
+
+    // RequireJS
+
+    if (true) {
+        !(__WEBPACK_AMD_DEFINE_FACTORY__ = (smoothScroll),
+				__WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ?
+				(__WEBPACK_AMD_DEFINE_FACTORY__.call(exports, __webpack_require__, exports, module)) :
+				__WEBPACK_AMD_DEFINE_FACTORY__),
+				__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
+
+        // CommonJS
+    } else if ((typeof exports === 'undefined' ? 'undefined' : _typeof(exports)) === 'object' && (typeof module === 'undefined' ? 'undefined' : _typeof(module)) === 'object') {
+        module.exports = smoothScroll();
+    } else {
+        root.smoothScroll = smoothScroll();
+    }
+})(undefined, function () {
+    'use strict';
+
+    // Do not initialize smoothScroll when running server side, handle it in client:
+
+    if ((typeof window === 'undefined' ? 'undefined' : _typeof(window)) !== 'object') return;
+
+    // We do not want this script to be applied in browsers that do not support those
+    // That means no smoothscroll on IE9 and below.
+    if (document.querySelectorAll === void 0 || window.pageYOffset === void 0 || history.pushState === void 0) {
+        return;
+    }
+
+    // Get the top position of an element in the document
+    var getTop = function getTop(element, start) {
+        // return value of html.getBoundingClientRect().top ... IE : 0, other browsers : -pageYOffset
+        if (element.nodeName === 'HTML') return -start;
+        return element.getBoundingClientRect().top + start;
+    };
+    // ease in out function thanks to:
+    // http://blog.greweb.fr/2012/02/bezier-curve-based-easing-functions-from-concept-to-implementation/
+    var easeInOutCubic = function easeInOutCubic(t) {
+        return t < .5 ? 4 * t * t * t : (t - 1) * (2 * t - 2) * (2 * t - 2) + 1;
+    };
+
+    // calculate the scroll position we should be in
+    // given the start and end point of the scroll
+    // the time elapsed from the beginning of the scroll
+    // and the total duration of the scroll (default 500ms)
+    var position = function position(start, end, elapsed, duration) {
+        if (elapsed > duration) return end;
+        return start + (end - start) * easeInOutCubic(elapsed / duration); // <-- you can change the easing funtion there
+        // return start + (end - start) * (elapsed / duration); // <-- this would give a linear scroll
+    };
+
+    // we use requestAnimationFrame to be called by the browser before every repaint
+    // if the first argument is an element then scroll to the top of this element
+    // if the first argument is numeric then scroll to this location
+    // if the callback exist, it is called when the scrolling is finished
+    // if context is set then scroll that element, else scroll window
+    var smoothScroll = function smoothScroll(el, duration, callback, context) {
+        duration = duration || 500;
+        context = context || window;
+        var start = context.scrollTop || window.pageYOffset;
+
+        if (typeof el === 'number') {
+            var end = parseInt(el);
+        } else {
+            var end = getTop(el, start);
+        }
+
+        var clock = Date.now();
+        var requestAnimationFrame = window.requestAnimationFrame || window.mozRequestAnimationFrame || window.webkitRequestAnimationFrame || function (fn) {
+            window.setTimeout(fn, 15);
+        };
+
+        var step = function step() {
+            var elapsed = Date.now() - clock;
+            if (context !== window) {
+                context.scrollTop = position(start, end, elapsed, duration);
+            } else {
+                window.scroll(0, position(start, end, elapsed, duration));
+            }
+
+            if (elapsed > duration) {
+                if (typeof callback === 'function') {
+                    callback(el);
+                }
+            } else {
+                requestAnimationFrame(step);
+            }
+        };
+        step();
+    };
+
+    var linkHandler = function linkHandler(ev) {
+        ev.preventDefault();
+
+        if (location.hash !== this.hash) window.history.pushState(null, null, this.hash);
+        // using the history api to solve issue #1 - back doesn't work
+        // most browser don't update :target when the history api is used:
+        // THIS IS A BUG FROM THE BROWSERS.
+        // change the scrolling duration in this call
+        var node = document.getElementById(this.hash.substring(1));
+        if (!node) return; // Do not scroll to non-existing node
+
+        smoothScroll(node, 500, function (el) {
+            location.replace('#' + el.id);
+            // this will cause the :target to be activated.
+        });
+    };
+
+    // We look for all the internal links in the documents and attach the smoothscroll function
+    document.addEventListener("DOMContentLoaded", function () {
+        var internal = document.querySelectorAll('a[href^="#"]:not([href="#"])'),
+            a;
+        for (var i = internal.length; a = internal[--i];) {
+            a.addEventListener("click", linkHandler, false);
+        }
+    });
+
+    // return smoothscroll API
+    return smoothScroll;
+});
+
+/***/ }),
+/* 99 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -7955,7 +8130,7 @@ Object.defineProperty(exports, "__esModule", {
 
 var _reactRedux = __webpack_require__(7);
 
-var _page = __webpack_require__(99);
+var _page = __webpack_require__(100);
 
 var _page2 = _interopRequireDefault(_page);
 
@@ -7990,7 +8165,7 @@ var PageContainer = (0, _reactRedux.connect)(mapStateToProps)(_page2.default);
 exports.default = PageContainer;
 
 /***/ }),
-/* 99 */
+/* 100 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -8021,7 +8196,7 @@ var _studentHandbookModule = __webpack_require__(9);
 
 var _studentHandbookModule2 = _interopRequireDefault(_studentHandbookModule);
 
-var _post = __webpack_require__(101);
+var _post = __webpack_require__(102);
 
 var _post2 = _interopRequireDefault(_post);
 
@@ -8076,7 +8251,7 @@ var Page = function Page(_ref) {
         null,
         _react2.default.createElement(_reactRouterDom.Link, {
           key: post.id,
-          to: post.slug,
+          to: '/handbook/' + post.slug,
           dangerouslySetInnerHTML: { __html: post.title.rendered }
         })
       );
@@ -8103,14 +8278,14 @@ Page.defaultProps = {
 exports.default = Page;
 
 /***/ }),
-/* 100 */
+/* 101 */
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin
 module.exports = {"ellipsis":"ellipsis--YlpON","blink":"blink--3n9m6"};
 
 /***/ }),
-/* 101 */
+/* 102 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -8153,7 +8328,7 @@ function Post(_ref) {
       'h1',
       { className: _studentHandbookModule2.default['post-title'], id: 'post-' + id },
       _react2.default.createElement(_reactRouterDom.Link, {
-        to: '/' + slug,
+        to: '/handbook/' + slug,
         dangerouslySetInnerHTML: { __html: title.rendered }
       })
     ),
@@ -8170,7 +8345,7 @@ Post.propTypes = {
 };
 
 /***/ }),
-/* 102 */
+/* 103 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -8182,11 +8357,11 @@ Object.defineProperty(exports, "__esModule", {
 
 var _reactRedux = __webpack_require__(7);
 
-var _colbyReactSearchInput = __webpack_require__(103);
+var _colbyReactSearchInput = __webpack_require__(104);
 
 var _colbyReactSearchInput2 = _interopRequireDefault(_colbyReactSearchInput);
 
-var _actions = __webpack_require__(10);
+var _actions = __webpack_require__(17);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -8210,7 +8385,7 @@ var SearchInputContainer = (0, _reactRedux.connect)(mapStateToProps, mapDispatch
 exports.default = SearchInputContainer;
 
 /***/ }),
-/* 103 */
+/* 104 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -8220,7 +8395,7 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _SearchInput = __webpack_require__(104);
+var _SearchInput = __webpack_require__(105);
 
 var _SearchInput2 = _interopRequireDefault(_SearchInput);
 
@@ -8229,7 +8404,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 exports.default = _SearchInput2.default;
 
 /***/ }),
-/* 104 */
+/* 105 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -8251,11 +8426,11 @@ var _colbyReactAnimatedEllipsis = __webpack_require__(34);
 
 var _colbyReactAnimatedEllipsis2 = _interopRequireDefault(_colbyReactAnimatedEllipsis);
 
-var _searchIcon = __webpack_require__(105);
+var _searchIcon = __webpack_require__(106);
 
 var _searchIcon2 = _interopRequireDefault(_searchIcon);
 
-var _defaultsModule = __webpack_require__(106);
+var _defaultsModule = __webpack_require__(107);
 
 var _defaultsModule2 = _interopRequireDefault(_defaultsModule);
 
@@ -8334,7 +8509,7 @@ SearchInput.propTypes = {
 exports.default = SearchInput;
 
 /***/ }),
-/* 105 */
+/* 106 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -8367,14 +8542,14 @@ var searchIcon = _react2.default.createElement(
 exports.default = searchIcon;
 
 /***/ }),
-/* 106 */
+/* 107 */
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin
 module.exports = {"container":"container--37_q9","optionsContainer":"optionsContainer--3oqZr","label":"label--2WLDI","feedback":"feedback--1UuBB","label-name":"label-name--2lCAP","input":"input--IB4VT"};
 
 /***/ }),
-/* 107 */
+/* 108 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";

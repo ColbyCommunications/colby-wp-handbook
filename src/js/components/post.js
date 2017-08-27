@@ -11,7 +11,7 @@ export default function Post({ id, title, content, link, slug }) {
     <div className={styles.post}>
       <h1 className={styles['post-title']} id={`post-${id}`}>
         <Link
-          to={`/${slug}`}
+          to={`/handbook/${slug}`}
           dangerouslySetInnerHTML={{ __html: title.rendered }}
         />
       </h1>

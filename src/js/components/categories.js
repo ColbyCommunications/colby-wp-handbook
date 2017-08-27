@@ -12,6 +12,7 @@ const Categories = ({ categories }) =>
         key={category.id}
         id={category.id}
         name={category.name}
+        slug={category.slug}
       />)
     )}
   </div>);

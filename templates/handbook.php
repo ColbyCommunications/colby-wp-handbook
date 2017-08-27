@@ -3,7 +3,6 @@ add_filter( 'body_class', function( $classes ) {
 	$classes[] = 'page';
 	return $classes;
 } );
-
 get_header();
 
 if ( has_post_thumbnail() && function_exists( 'colby_hero' ) ) {
@@ -13,13 +12,14 @@ if ( has_post_thumbnail() && function_exists( 'colby_hero' ) ) {
 	 );
 }
 
-if ( function_exists( 'colby_site_menu') ) {
+if ( function_exists( 'colby_site_menu' ) ) {
 	echo colby_site_menu(
 		'site-menu',
 		'header',
 		'levelTwoPageHeader ' . ( has_post_thumbnail() ? 'has-' : 'no-' ) . 'post-thumbnail'
 	);
 }
+
 ?>
 <main id="main" class="levelTwoPage">
 	<?php echo apply_filters( 'pre_main_article', '' ); ?>

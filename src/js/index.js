@@ -9,7 +9,7 @@ import { Route } from 'react-router-dom';
 import { routerReducer, routerMiddleware } from 'react-router-redux';
 
 import { categories, pages, search } from './reducers';
-import { setActivePost } from './actions';
+import { setActivePost, setActiveCategory } from './actions';
 import StudentHandbook from './components/student-handbook';
 import ConnectedBrowserRouter from './utils/ConnectedBrowserRouter';
 
@@ -93,17 +93,34 @@ class App extends React.Component {
     );
 
     const wp = location.href.indexOf('localhost') === -1 ? '' : '/wp';
+    const siteName =
+      location.href.indexOf('localhost') === -1
+        ? 'studentlife'
+        : 'communitylife';
 
     return (
       <Provider store={store}>
         <ConnectedBrowserRouter
           history={this.history}
-          basename={`${wp}/studentlife/handbook/`}
+          basename={`${wp}/${siteName}`}
         >
           <div className="container">
-            <Route exact path="/" component={StudentHandbook} />
+            <Route exact path="/handbook" component={StudentHandbook} />
             <Route
-              path="/:slug"
+              path="/handbook-section/:slug"
+              render={(props) => {
+                const activeCategory = Object.values(
+                  store.getState().categories.categories
+                ).filter(
+                  (category) => category.slug === props.match.params.slug
+                )[0];
+
+                store.dispatch(setActiveCategory(activeCategory.id));
+                return <StudentHandbook />;
+              }}
+            />
+            <Route
+              path="/handbook/:slug"
               render={(props) => {
                 let pagesArray = [];
                 Object.values(store.getState().pages.pages).forEach((array) => {

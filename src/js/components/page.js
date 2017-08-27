@@ -50,7 +50,7 @@ const Page = ({
           (<div>
             <Link
               key={post.id}
-              to={post.slug}
+              to={`/handbook/${post.slug}`}
               dangerouslySetInnerHTML={{ __html: post.title.rendered }}
             />
           </div>)

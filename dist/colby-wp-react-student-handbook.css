@@ -26,6 +26,9 @@
 
 .category--1bzpI {
   z-index: 0;
+  display: block;
+  -ms-flex-wrap: wrap;
+      flex-wrap: wrap;
   padding-left: 0;
   outline: none;
   border: none;
@@ -34,23 +37,24 @@
           box-shadow: none;
   color: #002878;
   text-align: left;
-  white-space: normal;
-  display: block;
-  font-size: .891rem;
   text-transform: uppercase;
-  -ms-flex-wrap: wrap;
-      flex-wrap: wrap; }
+  white-space: normal;
+  font-size: .891rem; }
+  .category--active--W-1DI {
+    font-weight: 600; }
   .category--1bzpI:hover {
     outline: none;
     border: none;
+    background-color: transparent;
     -webkit-box-shadow: none;
             box-shadow: none;
-    background-color: transparent;
     color: #001745;
     text-decoration: underline; }
   .category--1bzpI:focus, .category--1bzpI:active {
     z-index: 1;
-    outline: none; }
+    outline: none;
+    -webkit-box-shadow: none;
+            box-shadow: none; }
 
 .post-title--11hO8 {
   margin-bottom: .375em;
@@ -71,8 +75,8 @@
     font-size: 400; }
 
 .page--loading--1xsiZ {
-  width: 100%;
   padding: 3rem;
+  width: 100%;
   text-align: center; }
   .page--loading--1xsiZ span {
     font-size: 3rem; }

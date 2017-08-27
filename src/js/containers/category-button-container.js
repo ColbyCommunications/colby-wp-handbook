@@ -1,17 +1,12 @@
 import { connect } from 'react-redux';
 import CategoryButton from '../components/category-button';
-import { fetchPage } from '../actions';
 
 const mapStateToProps = (state, ownProps) => ({
   active: state.categories.activeCategory === ownProps.id,
+  pages: state.pages.pages[ownProps.id],
+  activePost: state.pages.activePost === null ? null : state.pages.activePost.id,
 });
 
-const mapDispatchToProps = (dispatch) => ({
-  onClick: (id) => dispatch(fetchPage(id)),
-});
-
-const CategoryButtonContainer = connect(mapStateToProps, mapDispatchToProps)(
-  CategoryButton
-);
+const CategoryButtonContainer = connect(mapStateToProps)(CategoryButton);
 
 export default CategoryButtonContainer;
