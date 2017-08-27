@@ -20,13 +20,17 @@ $link-color: $blue;
 }
 
 .page-pane {
-  padding-top: 1.5rem;
+  padding-top: 3rem;
   padding-bottom: 1.5rem;
 
   @media screen and (min-width: map-get($grid-breakpoints, 'md')) {
     padding-left: 1.5rem;
 
     @include make-col(9);
+  }
+
+  h2 {
+    margin-bottom: 1.5rem;
   }
 }
 

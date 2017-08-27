@@ -7886,7 +7886,10 @@ var mapStateToProps = function mapStateToProps(state, ownProps) {
   return {
     active: state.categories.activeCategory === ownProps.id,
     pages: state.pages.pages[ownProps.id],
-    activePost: state.pages.activePost ? state.pages.activePost.id : null
+    activePost: state.pages.activePost ? state.pages.activePost.id : null,
+    activeCategory: state.categories.categories.filter(function (category) {
+      return category.id === state.categories.activeCategory;
+    })[0]
   };
 };
 
@@ -7931,7 +7934,8 @@ var CategoryButton = function CategoryButton(_ref) {
       name = _ref.name,
       slug = _ref.slug,
       pages = _ref.pages,
-      activePost = _ref.activePost;
+      activePost = _ref.activePost,
+      activeCategory = _ref.activeCategory;
   return _react2.default.createElement(
     'div',
     null,
@@ -7946,13 +7950,18 @@ var CategoryButton = function CategoryButton(_ref) {
     active && pages.length > 1 ? _react2.default.createElement(
       'div',
       { className: 'mb-2' },
-      pages.map(function (page) {
+      pages.map(function (page, i) {
+        if (i === 0 && page.title.rendered === name) {
+          return null;
+        }
         return _react2.default.createElement(
           'div',
           {
             key: page.id,
             className: 'small pl-2 pb-1',
-            style: { fontWeight: page.id === activePost ? '600' : '400' }
+            style: {
+              fontWeight: page.id === activePost ? '600' : '400'
+            }
           },
           _react2.default.createElement(_reactRouterDom.Link, {
             onClick: function onClick() {
@@ -7969,6 +7978,7 @@ var CategoryButton = function CategoryButton(_ref) {
 
 CategoryButton.propTypes = {
   active: _propTypes2.default.bool.isRequired,
+  activeCategory: _propTypes2.default.objectOf(_propTypes2.default.any),
   activePost: _propTypes2.default.number,
   id: _propTypes2.default.number.isRequired,
   name: _propTypes2.default.string.isRequired,
@@ -7977,6 +7987,7 @@ CategoryButton.propTypes = {
 };
 
 CategoryButton.defaultProps = {
+  activeCategory: null,
   activePost: null
 };
 

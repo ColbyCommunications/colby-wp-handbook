@@ -14,7 +14,7 @@
       max-width: 25%; } }
 
 .page-pane--3lkWf {
-  padding-top: 1.5rem;
+  padding-top: 3rem;
   padding-bottom: 1.5rem; }
   @media screen and (min-width: 768px) {
     .page-pane--3lkWf {
@@ -23,6 +23,8 @@
           -ms-flex: 0 0 75%;
               flex: 0 0 75%;
       max-width: 75%; } }
+  .page-pane--3lkWf h2 {
+    margin-bottom: 1.5rem; }
 
 .category--1bzpI {
   z-index: 0;
