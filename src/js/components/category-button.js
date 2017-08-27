@@ -7,7 +7,15 @@ import smoothScroll from 'smoothscroll';
 
 import styles from './studentHandbook.module.scss';
 
-const CategoryButton = ({ active, id, name, slug, pages, activePost }) =>
+const CategoryButton = ({
+  active,
+  id,
+  name,
+  slug,
+  pages,
+  activePost,
+  activeCategory,
+}) =>
   (<div>
     <Link
       to={`/handbook-section/${slug}`}
@@ -25,28 +33,36 @@ const CategoryButton = ({ active, id, name, slug, pages, activePost }) =>
     />
     {active && pages.length > 1
       ? <div className="mb-2">
-        {pages.map((page) =>
-            (<div
+        {pages.map((page, i) => {
+          if (i === 0 && page.title.rendered === name) {
+            return null;
+          }
+          return (
+            <div
               key={page.id}
               className="small pl-2 pb-1"
-              style={{ fontWeight: page.id === activePost ? '600' : '400' }}
+              style={{
+                fontWeight: page.id === activePost ? '600' : '400',
+              }}
             >
               <Link
                 onClick={() =>
-                  smoothScroll(
-                    document.querySelector('[data-student-handbook]')
-                  )}
+                    smoothScroll(
+                      document.querySelector('[data-student-handbook]')
+                    )}
                 to={`/handbook/${page.slug}`}
                 dangerouslySetInnerHTML={{ __html: page.title.rendered }}
               />
-            </div>)
-          )}
+            </div>
+          );
+        })}
       </div>
       : null}
   </div>);
 
 CategoryButton.propTypes = {
   active: PropTypes.bool.isRequired,
+  activeCategory: PropTypes.objectOf(PropTypes.any),
   activePost: PropTypes.number,
   id: PropTypes.number.isRequired,
   name: PropTypes.string.isRequired,
@@ -55,6 +71,7 @@ CategoryButton.propTypes = {
 };
 
 CategoryButton.defaultProps = {
+  activeCategory: null,
   activePost: null,
 };
 
