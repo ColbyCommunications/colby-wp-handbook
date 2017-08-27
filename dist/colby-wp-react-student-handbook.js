@@ -7886,7 +7886,7 @@ var mapStateToProps = function mapStateToProps(state, ownProps) {
   return {
     active: state.categories.activeCategory === ownProps.id,
     pages: state.pages.pages[ownProps.id],
-    activePost: state.pages.activePost === null ? null : state.pages.activePost.id
+    activePost: state.pages.activePost ? state.pages.activePost.id : null
   };
 };
 
@@ -7943,7 +7943,7 @@ var CategoryButton = function CategoryButton(_ref) {
       className: ['btn', 'btn-primary', _studentHandbookModule2.default.category, active === true ? _studentHandbookModule2.default['category--active'] : ''].join(' ').trim(),
       dangerouslySetInnerHTML: { __html: name }
     }),
-    active ? _react2.default.createElement(
+    active && pages.length > 1 ? _react2.default.createElement(
       'div',
       { className: 'mb-2' },
       pages.map(function (page) {
@@ -8156,7 +8156,9 @@ var mapStateToProps = function mapStateToProps(state, ownProps) {
     searching: state.search.searching,
     searchTerm: state.search.searchTerm,
     name: name,
-    activeCategory: state.categories.activeCategory
+    activeCategory: state.categories.categories.filter(function (category) {
+      return category.id === state.categories.activeCategory;
+    })[0]
   };
 };
 
@@ -8255,14 +8257,19 @@ var Page = function Page(_ref) {
           dangerouslySetInnerHTML: { __html: post.title.rendered }
         })
       );
-    }) : posts.map(function (post) {
-      return _react2.default.createElement(_post2.default, _extends({ key: post.id }, post));
+    }) : posts.map(function (post, i) {
+      return _react2.default.createElement(_post2.default, _extends({
+        activeCategory: activeCategory,
+        postsLength: posts.length,
+        key: post.id,
+        index: i
+      }, post));
     })
   );
 };
 
 Page.propTypes = {
-  activeCategory: _propTypes2.default.number,
+  activeCategory: _propTypes2.default.objectOf(_propTypes2.default.any),
   activePost: _propTypes2.default.objectOf(_propTypes2.default.any),
   name: _propTypes2.default.string.isRequired,
   searching: _propTypes2.default.bool.isRequired,
@@ -8315,16 +8322,19 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 /* eslint react/no-danger: 0 */
 
 function Post(_ref) {
-  var id = _ref.id,
+  var activeCategory = _ref.activeCategory,
+      id = _ref.id,
+      index = _ref.index,
       title = _ref.title,
       content = _ref.content,
       link = _ref.link,
+      postsLength = _ref.postsLength,
       slug = _ref.slug;
 
   return _react2.default.createElement(
     'div',
     { className: _studentHandbookModule2.default.post },
-    _react2.default.createElement(
+    index === 0 && activeCategory.name === title.rendered ? null : _react2.default.createElement(
       'h1',
       { className: _studentHandbookModule2.default['post-title'], id: 'post-' + id },
       _react2.default.createElement(_reactRouterDom.Link, {
@@ -8337,11 +8347,18 @@ function Post(_ref) {
 }
 
 Post.propTypes = {
+  activeCategory: _propTypes2.default.objectOf(_propTypes2.default.any),
   content: _propTypes2.default.objectOf(_propTypes2.default.any).isRequired,
   id: _propTypes2.default.number.isRequired,
+  index: _propTypes2.default.number.isRequired,
   link: _propTypes2.default.string.isRequired,
+  postsLength: _propTypes2.default.number.isRequired,
   title: _propTypes2.default.objectOf(_propTypes2.default.any).isRequired,
   slug: _propTypes2.default.string.isRequired
+};
+
+Post.defaultProps = {
+  activeCategory: null
 };
 
 /***/ }),

@@ -55,13 +55,21 @@ const Page = ({
             />
           </div>)
           )
-        : posts.map((post) => <Post key={post.id} {...post} />)}
+        : posts.map((post, i) =>
+          (<Post
+            activeCategory={activeCategory}
+            postsLength={posts.length}
+            key={post.id}
+            index={i}
+            {...post}
+          />)
+          )}
     </div>
   );
 };
 
 Page.propTypes = {
-  activeCategory: PropTypes.number,
+  activeCategory: PropTypes.objectOf(PropTypes.any),
   activePost: PropTypes.objectOf(PropTypes.any),
   name: PropTypes.string.isRequired,
   searching: PropTypes.bool.isRequired,

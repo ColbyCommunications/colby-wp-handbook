@@ -23,7 +23,7 @@ const CategoryButton = ({ active, id, name, slug, pages, activePost }) =>
         .trim()}
       dangerouslySetInnerHTML={{ __html: name }}
     />
-    {active
+    {active && pages.length > 1
       ? <div className="mb-2">
         {pages.map((page) =>
             (<div

@@ -23,7 +23,9 @@ const mapStateToProps = (state, ownProps) => {
     searching: state.search.searching,
     searchTerm: state.search.searchTerm,
     name,
-    activeCategory: state.categories.activeCategory,
+    activeCategory: state.categories.categories.filter(
+      (category) => category.id === state.categories.activeCategory
+    )[0],
   };
 };
 
