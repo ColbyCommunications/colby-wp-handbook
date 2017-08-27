@@ -98,7 +98,7 @@ class App extends React.Component {
       <Provider store={store}>
         <ConnectedBrowserRouter
           history={this.history}
-          basename={`${wp}/communitylife/handbook/`}
+          basename={`${wp}/studentlife/handbook/`}
         >
           <div className="container">
             <Route exact path="/" component={StudentHandbook} />

@@ -3302,7 +3302,7 @@ var App = function (_React$Component) {
           _ConnectedBrowserRouter2.default,
           {
             history: this.history,
-            basename: wp + '/communitylife/handbook/'
+            basename: wp + '/studentlife/handbook/'
           },
           _react2.default.createElement(
             'div',
