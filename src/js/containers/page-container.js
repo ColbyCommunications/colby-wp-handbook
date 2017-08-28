@@ -1,6 +1,8 @@
 import { connect } from 'react-redux';
 import Page from '../components/page';
 
+import { changeSearchTerm } from '../actions';
+
 const mapStateToProps = (state, ownProps) => {
   let name = '';
   if (state.search.searching === true) {
@@ -29,6 +31,10 @@ const mapStateToProps = (state, ownProps) => {
   };
 };
 
-const PageContainer = connect(mapStateToProps)(Page);
+const mapDispatchToProps = (dispatch) => ({
+  clearSearchTerm: () => dispatch(changeSearchTerm('')),
+});
+
+const PageContainer = connect(mapStateToProps, mapDispatchToProps)(Page);
 
 export default PageContainer;

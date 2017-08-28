@@ -112,7 +112,7 @@ function search(
     case CHANGE_SEARCH_TERM: {
       return Object.assign({}, state, {
         searchTerm: action.searchTerm,
-        searching: true,
+        searching: !!action.searchTerm.length,
       });
     }
 

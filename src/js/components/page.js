@@ -12,6 +12,7 @@ import Post from './post';
 const Page = ({
   searching,
   searchTerm,
+  clearSearchTerm,
   activeCategory,
   name,
   posts,
@@ -47,10 +48,13 @@ const Page = ({
       {title}
       {searchTerm !== ''
         ? posts.map((post) =>
-          (<div>
+          (<div key={post.id}>
             <Link
               key={post.id}
               to={`/handbook/${post.slug}`}
+              onClick={() => {
+                clearSearchTerm();
+              }}
               dangerouslySetInnerHTML={{ __html: post.title.rendered }}
             />
           </div>)
@@ -71,15 +75,17 @@ const Page = ({
 Page.propTypes = {
   activeCategory: PropTypes.objectOf(PropTypes.any),
   activePost: PropTypes.objectOf(PropTypes.any),
+  clearSearchTerm: PropTypes.func.isRequired,
   name: PropTypes.string.isRequired,
   searching: PropTypes.bool.isRequired,
-  posts: PropTypes.arrayOf(PropTypes.object).isRequired,
+  posts: PropTypes.arrayOf(PropTypes.object),
   searchTerm: PropTypes.string.isRequired,
 };
 
 Page.defaultProps = {
   activeCategory: null,
   activePost: null,
+  posts: [],
 };
 
 export default Page;

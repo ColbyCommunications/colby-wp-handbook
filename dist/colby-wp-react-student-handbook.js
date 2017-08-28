@@ -7697,7 +7697,7 @@ function search() {
       {
         return Object.assign({}, state, {
           searchTerm: action.searchTerm,
-          searching: true
+          searching: !!action.searchTerm.length
         });
       }
 
@@ -7880,6 +7880,8 @@ var _categoryButton = __webpack_require__(97);
 
 var _categoryButton2 = _interopRequireDefault(_categoryButton);
 
+var _actions = __webpack_require__(17);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var mapStateToProps = function mapStateToProps(state, ownProps) {
@@ -7893,7 +7895,15 @@ var mapStateToProps = function mapStateToProps(state, ownProps) {
   };
 };
 
-var CategoryButtonContainer = (0, _reactRedux.connect)(mapStateToProps)(_categoryButton2.default);
+var mapDispatchToProps = function mapDispatchToProps(dispatch) {
+  return {
+    clearSearchTerm: function clearSearchTerm() {
+      return dispatch((0, _actions.changeSearchTerm)(''));
+    }
+  };
+};
+
+var CategoryButtonContainer = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(_categoryButton2.default);
 
 exports.default = CategoryButtonContainer;
 
@@ -7933,6 +7943,7 @@ var CategoryButton = function CategoryButton(_ref) {
       id = _ref.id,
       name = _ref.name,
       slug = _ref.slug,
+      clearSearchTerm = _ref.clearSearchTerm,
       pages = _ref.pages,
       activePost = _ref.activePost,
       activeCategory = _ref.activeCategory;
@@ -7942,7 +7953,8 @@ var CategoryButton = function CategoryButton(_ref) {
     _react2.default.createElement(_reactRouterDom.Link, {
       to: '/handbook-section/' + slug,
       onClick: function onClick() {
-        return (0, _smoothscroll2.default)(document.querySelector('[data-student-handbook]'));
+        clearSearchTerm();
+        (0, _smoothscroll2.default)(document.querySelector('[data-student-handbook]'));
       },
       className: ['btn', 'btn-primary', _studentHandbookModule2.default.category, active === true ? _studentHandbookModule2.default['category--active'] : ''].join(' ').trim(),
       dangerouslySetInnerHTML: { __html: name }
@@ -7965,7 +7977,8 @@ var CategoryButton = function CategoryButton(_ref) {
           },
           _react2.default.createElement(_reactRouterDom.Link, {
             onClick: function onClick() {
-              return (0, _smoothscroll2.default)(document.querySelector('[data-student-handbook]'));
+              clearSearchTerm();
+              (0, _smoothscroll2.default)(document.querySelector('[data-student-handbook]'));
             },
             to: '/handbook/' + page.slug,
             dangerouslySetInnerHTML: { __html: page.title.rendered }
@@ -7980,6 +7993,7 @@ CategoryButton.propTypes = {
   active: _propTypes2.default.bool.isRequired,
   activeCategory: _propTypes2.default.objectOf(_propTypes2.default.any),
   activePost: _propTypes2.default.number,
+  clearSearchTerm: _propTypes2.default.func.isRequired,
   id: _propTypes2.default.number.isRequired,
   name: _propTypes2.default.string.isRequired,
   pages: _propTypes2.default.arrayOf(_propTypes2.default.object).isRequired,
@@ -8145,6 +8159,8 @@ var _page = __webpack_require__(100);
 
 var _page2 = _interopRequireDefault(_page);
 
+var _actions = __webpack_require__(17);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var mapStateToProps = function mapStateToProps(state, ownProps) {
@@ -8173,7 +8189,15 @@ var mapStateToProps = function mapStateToProps(state, ownProps) {
   };
 };
 
-var PageContainer = (0, _reactRedux.connect)(mapStateToProps)(_page2.default);
+var mapDispatchToProps = function mapDispatchToProps(dispatch) {
+  return {
+    clearSearchTerm: function clearSearchTerm() {
+      return dispatch((0, _actions.changeSearchTerm)(''));
+    }
+  };
+};
+
+var PageContainer = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(_page2.default);
 
 exports.default = PageContainer;
 
@@ -8218,6 +8242,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 var Page = function Page(_ref) {
   var searching = _ref.searching,
       searchTerm = _ref.searchTerm,
+      clearSearchTerm = _ref.clearSearchTerm,
       activeCategory = _ref.activeCategory,
       name = _ref.name,
       posts = _ref.posts,
@@ -8261,10 +8286,13 @@ var Page = function Page(_ref) {
     searchTerm !== '' ? posts.map(function (post) {
       return _react2.default.createElement(
         'div',
-        null,
+        { key: post.id },
         _react2.default.createElement(_reactRouterDom.Link, {
           key: post.id,
           to: '/handbook/' + post.slug,
+          onClick: function onClick() {
+            clearSearchTerm();
+          },
           dangerouslySetInnerHTML: { __html: post.title.rendered }
         })
       );
@@ -8282,15 +8310,17 @@ var Page = function Page(_ref) {
 Page.propTypes = {
   activeCategory: _propTypes2.default.objectOf(_propTypes2.default.any),
   activePost: _propTypes2.default.objectOf(_propTypes2.default.any),
+  clearSearchTerm: _propTypes2.default.func.isRequired,
   name: _propTypes2.default.string.isRequired,
   searching: _propTypes2.default.bool.isRequired,
-  posts: _propTypes2.default.arrayOf(_propTypes2.default.object).isRequired,
+  posts: _propTypes2.default.arrayOf(_propTypes2.default.object),
   searchTerm: _propTypes2.default.string.isRequired
 };
 
 Page.defaultProps = {
   activeCategory: null,
-  activePost: null
+  activePost: null,
+  posts: []
 };
 
 exports.default = Page;
@@ -8339,13 +8369,12 @@ function Post(_ref) {
       title = _ref.title,
       content = _ref.content,
       link = _ref.link,
-      postsLength = _ref.postsLength,
       slug = _ref.slug;
 
   return _react2.default.createElement(
     'div',
     { className: _studentHandbookModule2.default.post },
-    index === 0 && activeCategory.name === title.rendered ? null : _react2.default.createElement(
+    index === 0 && activeCategory && activeCategory.name === title.rendered ? null : _react2.default.createElement(
       'h1',
       { className: _studentHandbookModule2.default['post-title'], id: 'post-' + id },
       _react2.default.createElement(_reactRouterDom.Link, {
@@ -8361,15 +8390,15 @@ Post.propTypes = {
   activeCategory: _propTypes2.default.objectOf(_propTypes2.default.any),
   content: _propTypes2.default.objectOf(_propTypes2.default.any).isRequired,
   id: _propTypes2.default.number.isRequired,
-  index: _propTypes2.default.number.isRequired,
+  index: _propTypes2.default.number,
   link: _propTypes2.default.string.isRequired,
-  postsLength: _propTypes2.default.number.isRequired,
   title: _propTypes2.default.objectOf(_propTypes2.default.any).isRequired,
   slug: _propTypes2.default.string.isRequired
 };
 
 Post.defaultProps = {
-  activeCategory: null
+  activeCategory: null,
+  index: 0
 };
 
 /***/ }),

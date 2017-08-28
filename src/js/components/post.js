@@ -13,12 +13,11 @@ export default function Post({
   title,
   content,
   link,
-  postsLength,
   slug,
 }) {
   return (
     <div className={styles.post}>
-      {index === 0 && activeCategory.name === title.rendered
+      {index === 0 && activeCategory && activeCategory.name === title.rendered
         ? null
         : <h1 className={styles['post-title']} id={`post-${id}`}>
           <Link
@@ -35,13 +34,13 @@ Post.propTypes = {
   activeCategory: PropTypes.objectOf(PropTypes.any),
   content: PropTypes.objectOf(PropTypes.any).isRequired,
   id: PropTypes.number.isRequired,
-  index: PropTypes.number.isRequired,
+  index: PropTypes.number,
   link: PropTypes.string.isRequired,
-  postsLength: PropTypes.number.isRequired,
   title: PropTypes.objectOf(PropTypes.any).isRequired,
   slug: PropTypes.string.isRequired,
 };
 
 Post.defaultProps = {
   activeCategory: null,
+  index: 0,
 };

@@ -1,4 +1,8 @@
 <?php
+add_filter( 'wp_title', function( $title ) {
+	return 'Colby College Student Handbook';
+} );
+
 add_filter( 'body_class', function( $classes ) {
 	$classes[] = 'page';
 	return $classes;

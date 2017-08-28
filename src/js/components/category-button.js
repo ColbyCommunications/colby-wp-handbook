@@ -12,6 +12,7 @@ const CategoryButton = ({
   id,
   name,
   slug,
+  clearSearchTerm,
   pages,
   activePost,
   activeCategory,
@@ -19,8 +20,10 @@ const CategoryButton = ({
   (<div>
     <Link
       to={`/handbook-section/${slug}`}
-      onClick={() =>
-        smoothScroll(document.querySelector('[data-student-handbook]'))}
+      onClick={() => {
+        clearSearchTerm();
+        smoothScroll(document.querySelector('[data-student-handbook]'));
+      }}
       className={[
         'btn',
         'btn-primary',
@@ -46,10 +49,12 @@ const CategoryButton = ({
               }}
             >
               <Link
-                onClick={() =>
-                    smoothScroll(
+                onClick={() => {
+                  clearSearchTerm();
+                  smoothScroll(
                       document.querySelector('[data-student-handbook]')
-                    )}
+                    );
+                }}
                 to={`/handbook/${page.slug}`}
                 dangerouslySetInnerHTML={{ __html: page.title.rendered }}
               />
@@ -64,6 +69,7 @@ CategoryButton.propTypes = {
   active: PropTypes.bool.isRequired,
   activeCategory: PropTypes.objectOf(PropTypes.any),
   activePost: PropTypes.number,
+  clearSearchTerm: PropTypes.func.isRequired,
   id: PropTypes.number.isRequired,
   name: PropTypes.string.isRequired,
   pages: PropTypes.arrayOf(PropTypes.object).isRequired,

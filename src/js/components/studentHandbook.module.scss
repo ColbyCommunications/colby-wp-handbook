@@ -20,7 +20,7 @@ $link-color: $blue;
 }
 
 .page-pane {
-  padding-top: 3rem;
+  padding-top: 2.25rem;
   padding-bottom: 1.5rem;
 
   @media screen and (min-width: map-get($grid-breakpoints, 'md')) {
@@ -30,7 +30,7 @@ $link-color: $blue;
   }
 
   h2 {
-    margin-bottom: 1.5rem;
+    margin-bottom: 1rem;
   }
 }
 
