@@ -3,7 +3,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
-import smoothScroll from 'smoothscroll';
 
 import styles from './studentHandbook.module.scss';
 
@@ -12,18 +11,14 @@ const CategoryButton = ({
   id,
   name,
   slug,
-  clearSearchTerm,
   pages,
   activePost,
   activeCategory,
+  setActivePost,
 }) =>
   (<div>
     <Link
       to={`/handbook-section/${slug}`}
-      onClick={() => {
-        clearSearchTerm();
-        smoothScroll(document.querySelector('[data-student-handbook]'));
-      }}
       className={[
         'btn',
         'btn-primary',
@@ -48,14 +43,9 @@ const CategoryButton = ({
                 fontWeight: page.id === activePost ? '600' : '400',
               }}
             >
-              <Link
-                onClick={() => {
-                  clearSearchTerm();
-                  smoothScroll(
-                      document.querySelector('[data-student-handbook]')
-                    );
-                }}
-                to={`/handbook/${page.slug}`}
+              <button
+                className={styles.sublink}
+                onClick={() => setActivePost(page)}
                 dangerouslySetInnerHTML={{ __html: page.title.rendered }}
               />
             </div>
@@ -69,11 +59,11 @@ CategoryButton.propTypes = {
   active: PropTypes.bool.isRequired,
   activeCategory: PropTypes.objectOf(PropTypes.any),
   activePost: PropTypes.number,
-  clearSearchTerm: PropTypes.func.isRequired,
   id: PropTypes.number.isRequired,
   name: PropTypes.string.isRequired,
   pages: PropTypes.arrayOf(PropTypes.object).isRequired,
   slug: PropTypes.string.isRequired,
+  setActivePost: PropTypes.func.isRequired,
 };
 
 CategoryButton.defaultProps = {

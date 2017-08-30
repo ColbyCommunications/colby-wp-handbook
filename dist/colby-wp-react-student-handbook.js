@@ -103,7 +103,7 @@ var _Route2 = __webpack_require__(29);
 
 var _Route3 = _interopRequireDefault(_Route2);
 
-var _Router2 = __webpack_require__(15);
+var _Router2 = __webpack_require__(16);
 
 var _Router3 = _interopRequireDefault(_Router2);
 
@@ -115,7 +115,7 @@ var _Switch2 = __webpack_require__(74);
 
 var _Switch3 = _interopRequireDefault(_Switch2);
 
-var _matchPath2 = __webpack_require__(16);
+var _matchPath2 = __webpack_require__(17);
 
 var _matchPath3 = _interopRequireDefault(_matchPath2);
 
@@ -542,6 +542,13 @@ exports.connect = _connect2.default;
 
 /***/ }),
 /* 8 */
+/***/ (function(module, exports) {
+
+// removed by extract-text-webpack-plugin
+module.exports = {"category-pane":"category-pane--28Tvo","page-pane":"page-pane--3lkWf","category":"category--1bzpI","category--active":"category--active--W-1DI","post-title":"post-title--11hO8","post":"post--sokNo","page--loading":"page--loading--1xsiZ","sublink":"sublink--36fx8"};
+
+/***/ }),
+/* 9 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -621,14 +628,130 @@ exports.matchPath = _matchPath3.default;
 exports.withRouter = _withRouter3.default;
 
 /***/ }),
-/* 9 */
-/***/ (function(module, exports) {
+/* 10 */
+/***/ (function(module, exports, __webpack_require__) {
 
-// removed by extract-text-webpack-plugin
-module.exports = {"category-pane":"category-pane--28Tvo","page-pane":"page-pane--3lkWf","category":"category--1bzpI","category--active":"category--active--W-1DI","post-title":"post-title--11hO8","post":"post--sokNo","page--loading":"page--loading--1xsiZ"};
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.setActivePost = exports.SET_ACTIVE_POST = exports.RECEIVE_SEARCH_RESULTS = exports.CHANGE_SEARCH_TERM = exports.RECEIVE_PAGE = exports.REQUEST_PAGE = exports.SET_ACTIVE_CATEGORY = undefined;
+exports.setActiveCategory = setActiveCategory;
+exports.requestPage = requestPage;
+exports.receivePage = receivePage;
+exports.fetchPage = fetchPage;
+exports.changeSearchTerm = changeSearchTerm;
+exports.receiveSearchResults = receiveSearchResults;
+exports.runSearch = runSearch;
+
+var _lodash = __webpack_require__(92);
+
+var _lodash2 = _interopRequireDefault(_lodash);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var SET_ACTIVE_CATEGORY = exports.SET_ACTIVE_CATEGORY = 'SET_ACTIVE_CATEGORY';
+function setActiveCategory(id) {
+  return {
+    type: SET_ACTIVE_CATEGORY,
+    id: id
+  };
+}
+
+var REQUEST_PAGE = exports.REQUEST_PAGE = 'REQUEST_PAGE';
+function requestPage() {
+  return {
+    type: REQUEST_PAGE
+  };
+}
+
+var RECEIVE_PAGE = exports.RECEIVE_PAGE = 'RECEIVE_PAGE';
+function receivePage(posts) {
+  return {
+    type: RECEIVE_PAGE,
+    posts: posts
+  };
+}
+
+var fetchPageCache = {};
+function fetchPage(id) {
+  return function (dispatch) {
+    dispatch(requestPage());
+    dispatch(setActiveCategory(id));
+
+    var url = window.COLBY_HANDBOOK_REST_URL + 'handbook-page';
+    url = url + '?handbook-section=' + id;
+    url = url + '&per_page=99&orderby=slug&order=asc';
+
+    if (url in fetchPageCache) {
+      return dispatch(receivePage(fetchPageCache[url]));
+    }
+
+    return fetch(url).then(function (response) {
+      return response.json();
+    }).then(function (posts) {
+      fetchPageCache[url] = posts;
+      dispatch(receivePage(posts));
+    });
+  };
+}
+
+var CHANGE_SEARCH_TERM = exports.CHANGE_SEARCH_TERM = 'CHANGE_SEARCH_TERM';
+function changeSearchTerm(searchTerm) {
+  return {
+    type: CHANGE_SEARCH_TERM,
+    searchTerm: searchTerm
+  };
+}
+
+var RECEIVE_SEARCH_RESULTS = exports.RECEIVE_SEARCH_RESULTS = 'RECEIVE_SEARCH_RESULTS';
+function receiveSearchResults(posts) {
+  return {
+    type: RECEIVE_SEARCH_RESULTS,
+    posts: posts
+  };
+}
+
+var searchCache = {};
+var search = function search(dispatch, url) {
+  return fetch(url).then(function (response) {
+    return response.json();
+  }).then(function (posts) {
+    var filteredPosts = posts.filter(function (post) {
+      return post;
+    });
+    searchCache[url] = filteredPosts;
+    dispatch(receiveSearchResults(filteredPosts));
+  });
+};
+var debouncedSearch = _lodash2.default.debounce(search, 400);
+function runSearch(searchTerm) {
+  return function (dispatch) {
+    dispatch(changeSearchTerm(searchTerm));
+
+    var url = window.COLBY_HANDBOOK_REST_URL + 'handbook-page';
+    url = url + '?search=' + searchTerm;
+
+    if (url in searchCache) {
+      return dispatch(receiveSearchResults(searchCache[url]));
+    }
+
+    return debouncedSearch(dispatch, url);
+  };
+}
+
+var SET_ACTIVE_POST = exports.SET_ACTIVE_POST = 'SET_ACTIVE_POST';
+var setActivePost = exports.setActivePost = function setActivePost(post) {
+  return {
+    type: SET_ACTIVE_POST,
+    post: post
+  };
+};
 
 /***/ }),
-/* 10 */
+/* 11 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -722,7 +845,7 @@ var locationsAreEqual = exports.locationsAreEqual = function locationsAreEqual(a
 };
 
 /***/ }),
-/* 11 */
+/* 12 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -815,7 +938,7 @@ var createTransitionManager = function createTransitionManager() {
 exports.default = createTransitionManager;
 
 /***/ }),
-/* 12 */
+/* 13 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -898,7 +1021,7 @@ function isPlainObject(value) {
 exports.default = isPlainObject;
 
 /***/ }),
-/* 13 */
+/* 14 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -928,7 +1051,7 @@ try {
 module.exports = g;
 
 /***/ }),
-/* 14 */
+/* 15 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -961,7 +1084,7 @@ function warning(message) {
 }
 
 /***/ }),
-/* 15 */
+/* 16 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1111,7 +1234,7 @@ Router.childContextTypes = {
 exports.default = Router;
 
 /***/ }),
-/* 16 */
+/* 17 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1194,126 +1317,6 @@ var matchPath = function matchPath(pathname) {
 exports.default = matchPath;
 
 /***/ }),
-/* 17 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.setActivePost = exports.SET_ACTIVE_POST = exports.RECEIVE_SEARCH_RESULTS = exports.CHANGE_SEARCH_TERM = exports.RECEIVE_PAGE = exports.REQUEST_PAGE = exports.SET_ACTIVE_CATEGORY = undefined;
-exports.setActiveCategory = setActiveCategory;
-exports.requestPage = requestPage;
-exports.receivePage = receivePage;
-exports.fetchPage = fetchPage;
-exports.changeSearchTerm = changeSearchTerm;
-exports.receiveSearchResults = receiveSearchResults;
-exports.runSearch = runSearch;
-
-var _lodash = __webpack_require__(92);
-
-var _lodash2 = _interopRequireDefault(_lodash);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-var SET_ACTIVE_CATEGORY = exports.SET_ACTIVE_CATEGORY = 'SET_ACTIVE_CATEGORY';
-function setActiveCategory(id) {
-  return {
-    type: SET_ACTIVE_CATEGORY,
-    id: id
-  };
-}
-
-var REQUEST_PAGE = exports.REQUEST_PAGE = 'REQUEST_PAGE';
-function requestPage() {
-  return {
-    type: REQUEST_PAGE
-  };
-}
-
-var RECEIVE_PAGE = exports.RECEIVE_PAGE = 'RECEIVE_PAGE';
-function receivePage(posts) {
-  return {
-    type: RECEIVE_PAGE,
-    posts: posts
-  };
-}
-
-var fetchPageCache = {};
-function fetchPage(id) {
-  return function (dispatch) {
-    dispatch(requestPage());
-    dispatch(setActiveCategory(id));
-
-    var url = window.COLBY_HANDBOOK_REST_URL + 'handbook-page';
-    url = url + '?handbook-section=' + id;
-    url = url + '&per_page=99&orderby=slug&order=asc';
-
-    if (url in fetchPageCache) {
-      return dispatch(receivePage(fetchPageCache[url]));
-    }
-
-    return fetch(url).then(function (response) {
-      return response.json();
-    }).then(function (posts) {
-      fetchPageCache[url] = posts;
-      dispatch(receivePage(posts));
-    });
-  };
-}
-
-var CHANGE_SEARCH_TERM = exports.CHANGE_SEARCH_TERM = 'CHANGE_SEARCH_TERM';
-function changeSearchTerm(searchTerm) {
-  return {
-    type: CHANGE_SEARCH_TERM,
-    searchTerm: searchTerm
-  };
-}
-
-var RECEIVE_SEARCH_RESULTS = exports.RECEIVE_SEARCH_RESULTS = 'RECEIVE_SEARCH_RESULTS';
-function receiveSearchResults(posts) {
-  return {
-    type: RECEIVE_SEARCH_RESULTS,
-    posts: posts
-  };
-}
-
-var searchCache = {};
-var search = function search(dispatch, url) {
-  return fetch(url).then(function (response) {
-    return response.json();
-  }).then(function (posts) {
-    searchCache[url] = posts;
-    dispatch(receiveSearchResults(posts));
-  });
-};
-var debouncedSearch = _lodash2.default.debounce(search, 200);
-function runSearch(searchTerm) {
-  return function (dispatch) {
-    dispatch(changeSearchTerm(searchTerm));
-
-    var url = window.COLBY_HANDBOOK_REST_URL + 'handbook-page';
-    url = url + '?search=' + searchTerm;
-
-    if (url in searchCache) {
-      return dispatch(receiveSearchResults(searchCache[url]));
-    }
-
-    return debouncedSearch(dispatch, url);
-  };
-}
-
-var SET_ACTIVE_POST = exports.SET_ACTIVE_POST = 'SET_ACTIVE_POST';
-var setActivePost = exports.setActivePost = function setActivePost(post) {
-  return {
-    type: SET_ACTIVE_POST,
-    post: post
-  };
-};
-
-/***/ }),
 /* 18 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -1348,11 +1351,11 @@ var _invariant = __webpack_require__(5);
 
 var _invariant2 = _interopRequireDefault(_invariant);
 
-var _LocationUtils = __webpack_require__(10);
+var _LocationUtils = __webpack_require__(11);
 
 var _PathUtils = __webpack_require__(6);
 
-var _createTransitionManager = __webpack_require__(11);
+var _createTransitionManager = __webpack_require__(12);
 
 var _createTransitionManager2 = _interopRequireDefault(_createTransitionManager);
 
@@ -1771,7 +1774,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 
 exports.default = createStore;
 
-var _isPlainObject = __webpack_require__(12);
+var _isPlainObject = __webpack_require__(13);
 
 var _isPlainObject2 = _interopRequireDefault(_isPlainObject);
 
@@ -2597,11 +2600,11 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = verifyPlainObject;
 
-var _isPlainObject = __webpack_require__(12);
+var _isPlainObject = __webpack_require__(13);
 
 var _isPlainObject2 = _interopRequireDefault(_isPlainObject);
 
-var _warning = __webpack_require__(14);
+var _warning = __webpack_require__(15);
 
 var _warning2 = _interopRequireDefault(_warning);
 
@@ -2638,7 +2641,7 @@ var _propTypes = __webpack_require__(1);
 
 var _propTypes2 = _interopRequireDefault(_propTypes);
 
-var _matchPath = __webpack_require__(16);
+var _matchPath = __webpack_require__(17);
 
 var _matchPath2 = _interopRequireDefault(_matchPath);
 
@@ -3121,7 +3124,7 @@ var _react = __webpack_require__(0);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _ellipsis = __webpack_require__(101);
+var _ellipsis = __webpack_require__(100);
 
 var _ellipsis2 = _interopRequireDefault(_ellipsis);
 
@@ -3156,7 +3159,8 @@ function AnimatedEllipsis() {
 "use strict";
 
 
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }(); /* eslint no-new: 0 */
+
 
 var _createBrowserHistory = __webpack_require__(18);
 
@@ -3168,6 +3172,8 @@ var _react2 = _interopRequireDefault(_react);
 
 var _reactDom = __webpack_require__(38);
 
+var _reactDom2 = _interopRequireDefault(_reactDom);
+
 var _redux = __webpack_require__(20);
 
 var _reduxThunk = __webpack_require__(54);
@@ -3178,13 +3184,13 @@ var _reactRedux = __webpack_require__(7);
 
 var _reduxLogger = __webpack_require__(65);
 
-var _reactRouterDom = __webpack_require__(8);
+var _reactRouterDom = __webpack_require__(9);
 
 var _reactRouterRedux = __webpack_require__(31);
 
 var _reducers = __webpack_require__(91);
 
-var _actions = __webpack_require__(17);
+var _actions = __webpack_require__(10);
 
 var _studentHandbook = __webpack_require__(93);
 
@@ -3198,38 +3204,52 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-var App = function (_React$Component) {
-  _inherits(App, _React$Component);
-
+var App = function () {
   function App(props) {
     _classCallCheck(this, App);
 
-    var _this = _possibleConstructorReturn(this, (App.__proto__ || Object.getPrototypeOf(App)).call(this, props));
+    this.props = props;
 
-    _this.state = { categories: null, pages: null };
+    this.fetchCategories = this.fetchCategories.bind(this);
+    this.fetchPages = this.fetchPages.bind(this);
+    this.setUpStore = this.setUpStore.bind(this);
+    this.render = this.render.bind(this);
 
-    _this.history = (0, _createBrowserHistory2.default)();
-    _this.routerHistoryMiddleware = (0, _reactRouterRedux.routerMiddleware)(_this.history);
-
-    _this.fetchCategories = _this.fetchCategories.bind(_this);
-    _this.fetchPages = _this.fetchPages.bind(_this);
-    return _this;
+    this.fetchCategories();
   }
 
   _createClass(App, [{
-    key: 'componentDidMount',
-    value: function componentDidMount() {
-      this.fetchCategories();
-      this.fetchPages();
+    key: 'setUpStore',
+    value: function setUpStore() {
+      this.history = (0, _createBrowserHistory2.default)();
+      var routerHistoryMiddleware = (0, _reactRouterRedux.routerMiddleware)(history);
+      var middlewares = [_reduxThunk2.default, routerHistoryMiddleware];
+
+      if (window.location.href.indexOf('localhost') !== -1) {
+        middlewares.push((0, _reduxLogger.createLogger)());
+      }
+
+      this.store = (0, _redux.createStore)((0, _redux.combineReducers)({ categories: _reducers.categories, pages: _reducers.pages, search: _reducers.search, routerReducer: _reactRouterRedux.routerReducer }), {
+        categories: {
+          categories: this.categories,
+          activeCategory: this.categories[0].id
+        },
+        pages: {
+          pages: this.pages,
+          activePost: this.pages[this.categories[0].id][0]
+        },
+        search: {
+          searching: false,
+          searchTerm: ''
+        }
+      }, _redux.applyMiddleware.apply(undefined, middlewares));
+
+      this.render();
     }
   }, {
     key: 'fetchCategories',
     value: function fetchCategories() {
-      var _this2 = this;
+      var _this = this;
 
       var url = window.COLBY_HANDBOOK_REST_URL + 'handbook-section?per_page=99';
       url = url + '&orderby=slug&order=asc';
@@ -3237,13 +3257,14 @@ var App = function (_React$Component) {
       return fetch(url).then(function (response) {
         return response.json();
       }).then(function (receivedCategories) {
-        _this2.setState({ categories: receivedCategories });
+        _this.categories = receivedCategories;
+        _this.fetchPages();
       });
     }
   }, {
     key: 'fetchPages',
     value: function fetchPages() {
-      var _this3 = this;
+      var _this2 = this;
 
       var url = window.COLBY_HANDBOOK_REST_URL + 'handbook-page';
       url = url + '?per_page=99&orderby=slug&order=asc';
@@ -3253,7 +3274,10 @@ var App = function (_React$Component) {
       }).then(function (receivedPages) {
         var categorizedPages = {};
 
-        receivedPages.forEach(function (post) {
+        var filteredReceivedPages = receivedPages.filter(function (page) {
+          return page;
+        });
+        filteredReceivedPages.forEach(function (post) {
           post['handbook-section'].forEach(function (section) {
             if (!categorizedPages[section]) {
               categorizedPages[section] = [];
@@ -3263,42 +3287,21 @@ var App = function (_React$Component) {
           });
         });
 
-        _this3.setState({ pages: categorizedPages });
+        _this2.pages = categorizedPages;
+        _this2.setUpStore();
       });
     }
   }, {
     key: 'render',
     value: function render() {
-      if (Object.values(this.state).includes(null)) {
-        return null;
-      }
-
-      var middlewares = [_reduxThunk2.default, this.routerHistoryMiddleware];
-
-      if (window.location.href.indexOf('localhost') !== -1) {
-        middlewares.push((0, _reduxLogger.createLogger)());
-      }
-
-      var store = (0, _redux.createStore)((0, _redux.combineReducers)({ categories: _reducers.categories, pages: _reducers.pages, search: _reducers.search, routerReducer: _reactRouterRedux.routerReducer }), {
-        categories: {
-          categories: this.state.categories,
-          activeCategory: this.state.categories[0].id
-        },
-        pages: {
-          pages: this.state.pages
-        },
-        search: {
-          searching: false,
-          searchTerm: ''
-        }
-      }, _redux.applyMiddleware.apply(undefined, middlewares));
+      var _this3 = this;
 
       var wp = location.href.indexOf('localhost') === -1 ? '' : '/wp';
       var siteName = location.href.indexOf('localhost') === -1 ? 'studentlife' : 'communitylife';
 
-      return _react2.default.createElement(
+      _reactDom2.default.render(_react2.default.createElement(
         _reactRedux.Provider,
-        { store: store },
+        { store: this.store },
         _react2.default.createElement(
           _ConnectedBrowserRouter2.default,
           {
@@ -3312,11 +3315,12 @@ var App = function (_React$Component) {
             _react2.default.createElement(_reactRouterDom.Route, {
               path: '/handbook-section/:slug',
               render: function render(props) {
-                var activeCategory = Object.values(store.getState().categories.categories).filter(function (category) {
+                var activeCategory = Object.values(_this3.store.getState().categories.categories).filter(function (category) {
                   return category.slug === props.match.params.slug;
                 })[0];
 
-                store.dispatch((0, _actions.setActiveCategory)(activeCategory.id));
+                _this3.store.dispatch((0, _actions.setActivePost)(_this3.store.getState().pages.pages[activeCategory.id][0]));
+                _this3.store.dispatch((0, _actions.setActiveCategory)(activeCategory.id));
                 return _react2.default.createElement(_studentHandbook2.default, null);
               }
             }),
@@ -3324,7 +3328,7 @@ var App = function (_React$Component) {
               path: '/handbook/:slug',
               render: function render(props) {
                 var pagesArray = [];
-                Object.values(store.getState().pages.pages).forEach(function (array) {
+                Object.values(_this3.state.store.getState().pages.pages).forEach(function (array) {
                   pagesArray = pagesArray.concat(array);
                 });
 
@@ -3333,7 +3337,7 @@ var App = function (_React$Component) {
                 });
 
                 if (activePosts.length) {
-                  store.dispatch((0, _actions.setActivePost)(activePosts[0]));
+                  _this3.state.store.dispatch((0, _actions.setActivePost)(activePosts[0]));
                 }
 
                 return _react2.default.createElement(_studentHandbook2.default, null);
@@ -3341,16 +3345,16 @@ var App = function (_React$Component) {
             })
           )
         )
-      );
+      ), this.props.container);
     }
   }]);
 
   return App;
-}(_react2.default.Component);
+}();
 
 function init() {
   Array.prototype.forEach.call(document.querySelectorAll('[data-student-handbook]'), function (container) {
-    (0, _reactDom.render)(_react2.default.createElement(App, null), container);
+    return new App({ container: container });
   });
 }
 
@@ -3582,7 +3586,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 var freeGlobal = (typeof global === 'undefined' ? 'undefined' : _typeof(global)) == 'object' && global && global.Object === Object && global;
 
 exports.default = freeGlobal;
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(13)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(14)))
 
 /***/ }),
 /* 42 */
@@ -3814,7 +3818,7 @@ if (typeof self !== 'undefined') {
 
 var result = (0, _ponyfill2['default'])(root);
 exports['default'] = result;
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(13), __webpack_require__(49)(module)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(14), __webpack_require__(49)(module)))
 
 /***/ }),
 /* 49 */
@@ -3889,7 +3893,7 @@ exports.default = combineReducers;
 
 var _createStore = __webpack_require__(21);
 
-var _isPlainObject = __webpack_require__(12);
+var _isPlainObject = __webpack_require__(13);
 
 var _isPlainObject2 = _interopRequireDefault(_isPlainObject);
 
@@ -4214,7 +4218,7 @@ var _propTypes2 = _interopRequireDefault(_propTypes);
 
 var _PropTypes = __webpack_require__(25);
 
-var _warning = __webpack_require__(14);
+var _warning = __webpack_require__(15);
 
 var _warning2 = _interopRequireDefault(_warning);
 
@@ -4954,7 +4958,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = verifySubselectors;
 
-var _warning = __webpack_require__(14);
+var _warning = __webpack_require__(15);
 
 var _warning2 = _interopRequireDefault(_warning);
 
@@ -5269,7 +5273,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
         r = e.getState;return "function" == typeof t || "function" == typeof r ? S()({ dispatch: t, getState: r }) : void console.error("\n[redux-logger v3] BREAKING CHANGE\n[redux-logger v3] Since 3.0.0 redux-logger exports by default logger with default settings.\n[redux-logger v3] Change\n[redux-logger v3] import createLogger from 'redux-logger'\n[redux-logger v3] to\n[redux-logger v3] import { createLogger } from 'redux-logger'\n");
   };e.defaults = L, e.createLogger = S, e.logger = T, e.default = T, Object.defineProperty(e, "__esModule", { value: !0 });
 });
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(13)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(14)))
 
 /***/ }),
 /* 66 */
@@ -5379,7 +5383,7 @@ var _createMemoryHistory = __webpack_require__(68);
 
 var _createMemoryHistory2 = _interopRequireDefault(_createMemoryHistory);
 
-var _Router = __webpack_require__(15);
+var _Router = __webpack_require__(16);
 
 var _Router2 = _interopRequireDefault(_Router);
 
@@ -5472,9 +5476,9 @@ var _warning2 = _interopRequireDefault(_warning);
 
 var _PathUtils = __webpack_require__(6);
 
-var _LocationUtils = __webpack_require__(10);
+var _LocationUtils = __webpack_require__(11);
 
-var _createTransitionManager = __webpack_require__(11);
+var _createTransitionManager = __webpack_require__(12);
 
 var _createTransitionManager2 = _interopRequireDefault(_createTransitionManager);
 
@@ -6318,7 +6322,7 @@ var _propTypes2 = _interopRequireDefault(_propTypes);
 
 var _PathUtils = __webpack_require__(6);
 
-var _Router = __webpack_require__(15);
+var _Router = __webpack_require__(16);
 
 var _Router2 = _interopRequireDefault(_Router);
 
@@ -6527,7 +6531,7 @@ var _warning = __webpack_require__(4);
 
 var _warning2 = _interopRequireDefault(_warning);
 
-var _matchPath = __webpack_require__(16);
+var _matchPath = __webpack_require__(17);
 
 var _matchPath2 = _interopRequireDefault(_matchPath);
 
@@ -6846,11 +6850,11 @@ var _invariant = __webpack_require__(5);
 
 var _invariant2 = _interopRequireDefault(_invariant);
 
-var _LocationUtils = __webpack_require__(10);
+var _LocationUtils = __webpack_require__(11);
 
 var _PathUtils = __webpack_require__(6);
 
-var _createTransitionManager = __webpack_require__(11);
+var _createTransitionManager = __webpack_require__(12);
 
 var _createTransitionManager2 = _interopRequireDefault(_createTransitionManager);
 
@@ -7591,7 +7595,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.search = exports.pages = exports.categories = undefined;
 
-var _actions = __webpack_require__(17);
+var _actions = __webpack_require__(10);
 
 /* Reducer for requesting, receiving, and setting acive categories. */
 function categories() {
@@ -7606,7 +7610,6 @@ function categories() {
   switch (action.type) {
     case _actions.CHANGE_SEARCH_TERM:
       return Object.assign({}, state, {
-        activeCategory: action.searchTerm === '' ? state.savedActiveCategory : null,
         savedActiveCategory: state.activeCategory === null ? state.savedActiveCategory : state.activeCategory
       });
 
@@ -7650,23 +7653,8 @@ function pages() {
       return Object.assign({}, state, {
         fetching: false,
         posts: action.posts,
-        loaded: true,
-        activePost: null
+        loaded: true
       });
-
-    case _actions.RECEIVE_SEARCH_RESULTS:
-      {
-        return Object.assign({}, state, {
-          activePost: null
-        });
-      }
-
-    case _actions.SET_ACTIVE_CATEGORY:
-      {
-        return Object.assign({}, state, {
-          activePost: null
-        });
-      }
 
     case _actions.SET_ACTIVE_POST:
       {
@@ -7699,6 +7687,11 @@ function search() {
           searchTerm: action.searchTerm,
           searching: !!action.searchTerm.length
         });
+      }
+
+    case _actions.SET_ACTIVE_POST:
+      {
+        return Object.assign({}, state, { searchTerm: '' });
       }
 
     case _actions.RECEIVE_SEARCH_RESULTS:
@@ -7741,7 +7734,7 @@ var _react = __webpack_require__(0);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _studentHandbookModule = __webpack_require__(9);
+var _studentHandbookModule = __webpack_require__(8);
 
 var _studentHandbookModule2 = _interopRequireDefault(_studentHandbookModule);
 
@@ -7749,7 +7742,7 @@ var _categoriesContainer = __webpack_require__(94);
 
 var _categoriesContainer2 = _interopRequireDefault(_categoriesContainer);
 
-var _pageContainer = __webpack_require__(99);
+var _pageContainer = __webpack_require__(98);
 
 var _pageContainer2 = _interopRequireDefault(_pageContainer);
 
@@ -7827,7 +7820,7 @@ var _propTypes = __webpack_require__(1);
 
 var _propTypes2 = _interopRequireDefault(_propTypes);
 
-var _studentHandbookModule = __webpack_require__(9);
+var _studentHandbookModule = __webpack_require__(8);
 
 var _studentHandbookModule2 = _interopRequireDefault(_studentHandbookModule);
 
@@ -7880,7 +7873,7 @@ var _categoryButton = __webpack_require__(97);
 
 var _categoryButton2 = _interopRequireDefault(_categoryButton);
 
-var _actions = __webpack_require__(17);
+var _actions = __webpack_require__(10);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -7897,8 +7890,8 @@ var mapStateToProps = function mapStateToProps(state, ownProps) {
 
 var mapDispatchToProps = function mapDispatchToProps(dispatch) {
   return {
-    clearSearchTerm: function clearSearchTerm() {
-      return dispatch((0, _actions.changeSearchTerm)(''));
+    setActivePost: function setActivePost(id) {
+      return dispatch((0, _actions.setActivePost)(id));
     }
   };
 };
@@ -7926,36 +7919,30 @@ var _propTypes = __webpack_require__(1);
 
 var _propTypes2 = _interopRequireDefault(_propTypes);
 
-var _reactRouterDom = __webpack_require__(8);
+var _reactRouterDom = __webpack_require__(9);
 
-var _smoothscroll = __webpack_require__(98);
-
-var _smoothscroll2 = _interopRequireDefault(_smoothscroll);
-
-var _studentHandbookModule = __webpack_require__(9);
+var _studentHandbookModule = __webpack_require__(8);
 
 var _studentHandbookModule2 = _interopRequireDefault(_studentHandbookModule);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+/* eslint react/no-danger: 0 */
 
 var CategoryButton = function CategoryButton(_ref) {
   var active = _ref.active,
       id = _ref.id,
       name = _ref.name,
       slug = _ref.slug,
-      clearSearchTerm = _ref.clearSearchTerm,
       pages = _ref.pages,
       activePost = _ref.activePost,
-      activeCategory = _ref.activeCategory;
+      activeCategory = _ref.activeCategory,
+      setActivePost = _ref.setActivePost;
   return _react2.default.createElement(
     'div',
     null,
     _react2.default.createElement(_reactRouterDom.Link, {
       to: '/handbook-section/' + slug,
-      onClick: function onClick() {
-        clearSearchTerm();
-        (0, _smoothscroll2.default)(document.querySelector('[data-student-handbook]'));
-      },
       className: ['btn', 'btn-primary', _studentHandbookModule2.default.category, active === true ? _studentHandbookModule2.default['category--active'] : ''].join(' ').trim(),
       dangerouslySetInnerHTML: { __html: name }
     }),
@@ -7975,29 +7962,28 @@ var CategoryButton = function CategoryButton(_ref) {
               fontWeight: page.id === activePost ? '600' : '400'
             }
           },
-          _react2.default.createElement(_reactRouterDom.Link, {
+          _react2.default.createElement('button', {
+            className: _studentHandbookModule2.default.sublink,
             onClick: function onClick() {
-              clearSearchTerm();
-              (0, _smoothscroll2.default)(document.querySelector('[data-student-handbook]'));
+              return setActivePost(page);
             },
-            to: '/handbook/' + page.slug,
             dangerouslySetInnerHTML: { __html: page.title.rendered }
           })
         );
       })
     ) : null
   );
-}; /* eslint react/no-danger: 0 */
+};
 
 CategoryButton.propTypes = {
   active: _propTypes2.default.bool.isRequired,
   activeCategory: _propTypes2.default.objectOf(_propTypes2.default.any),
   activePost: _propTypes2.default.number,
-  clearSearchTerm: _propTypes2.default.func.isRequired,
   id: _propTypes2.default.number.isRequired,
   name: _propTypes2.default.string.isRequired,
   pages: _propTypes2.default.arrayOf(_propTypes2.default.object).isRequired,
-  slug: _propTypes2.default.string.isRequired
+  slug: _propTypes2.default.string.isRequired,
+  setActivePost: _propTypes2.default.func.isRequired
 };
 
 CategoryButton.defaultProps = {
@@ -8009,6 +7995,347 @@ exports.default = CategoryButton;
 
 /***/ }),
 /* 98 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _reactRedux = __webpack_require__(7);
+
+var _page = __webpack_require__(99);
+
+var _page2 = _interopRequireDefault(_page);
+
+var _actions = __webpack_require__(10);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var mapStateToProps = function mapStateToProps(state, ownProps) {
+  var name = '';
+  if (state.search.searching === true) {
+    name = 'Search Results';
+  } else if (state.categories.categories.length) {
+    try {
+      name = state.categories.categories.filter(function (category) {
+        return category.id === state.categories.activeCategory;
+      })[0].name;
+    } catch (e) {
+      name = '';
+    }
+  }
+
+  return {
+    activePost: state.pages.activePost,
+    categories: state.categories.categories,
+    posts: state.search.searchTerm.length ? state.search.posts : state.pages.pages[state.categories.activeCategory],
+    searching: state.search.searching,
+    searchTerm: state.search.searchTerm,
+    name: name,
+    activeCategory: state.categories.activeCategory
+  };
+};
+
+var mapDispatchToProps = function mapDispatchToProps(dispatch) {
+  return {
+    setActiveCategory: function setActiveCategory(category) {
+      return (0, _actions.setActiveCategory)(category);
+    },
+    setActivePost: function setActivePost(post) {
+      return (0, _actions.setActivePost)(post);
+    }
+  };
+};
+
+var PageContainer = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(_page2.default);
+
+exports.default = PageContainer;
+
+/***/ }),
+/* 99 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _react = __webpack_require__(0);
+
+var _react2 = _interopRequireDefault(_react);
+
+var _propTypes = __webpack_require__(1);
+
+var _propTypes2 = _interopRequireDefault(_propTypes);
+
+var _reactRouterDom = __webpack_require__(9);
+
+var _colbyReactAnimatedEllipsis = __webpack_require__(34);
+
+var _colbyReactAnimatedEllipsis2 = _interopRequireDefault(_colbyReactAnimatedEllipsis);
+
+var _studentHandbookModule = __webpack_require__(8);
+
+var _studentHandbookModule2 = _interopRequireDefault(_studentHandbookModule);
+
+var _post = __webpack_require__(101);
+
+var _post2 = _interopRequireDefault(_post);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; } /* eslint react/no-danger: 0 */
+
+
+var Page = function (_React$Component) {
+  _inherits(Page, _React$Component);
+
+  function Page() {
+    _classCallCheck(this, Page);
+
+    return _possibleConstructorReturn(this, (Page.__proto__ || Object.getPrototypeOf(Page)).apply(this, arguments));
+  }
+
+  _createClass(Page, [{
+    key: 'render',
+    value: function render() {
+      var _this2 = this;
+
+      var _props = this.props,
+          searching = _props.searching,
+          searchTerm = _props.searchTerm,
+          categories = _props.categories,
+          activeCategory = _props.activeCategory,
+          name = _props.name,
+          posts = _props.posts,
+          setActivePost = _props.setActivePost;
+
+      if (searching === true) {
+        return _react2.default.createElement(
+          'div',
+          {
+            className: [_studentHandbookModule2.default.page, _studentHandbookModule2.default['page--loading']].join(' ').trim()
+          },
+          _react2.default.createElement(_colbyReactAnimatedEllipsis2.default, null)
+        );
+      }
+
+      var title = searchTerm !== '' ? _react2.default.createElement(
+        'h2',
+        null,
+        'Results for ',
+        _react2.default.createElement(
+          'i',
+          null,
+          searchTerm
+        )
+      ) : _react2.default.createElement(
+        'h2',
+        null,
+        name
+      );
+
+      return _react2.default.createElement(
+        'div',
+        {
+          className: _studentHandbookModule2.default.page,
+          ref: function ref(container) {
+            _this2.container = container;
+          }
+        },
+        title,
+        searchTerm !== '' ? posts.map(function (post) {
+          return _react2.default.createElement(
+            'div',
+            { key: post.id },
+            _react2.default.createElement(_reactRouterDom.Link, {
+              key: post.id,
+              onClick: function onClick() {
+                return setActivePost(post);
+              },
+              to: '/handbook-section/' + post.categorySlug,
+              dangerouslySetInnerHTML: { __html: post.title.rendered }
+            })
+          );
+        }) : posts.map(function (post, i) {
+          return _react2.default.createElement(_post2.default, _extends({
+            activeCategory: activeCategory,
+            active: post.id === _this2.props.activePost.id,
+            postsLength: posts.length,
+            key: post.id,
+            categories: categories,
+            index: i
+          }, post));
+        })
+      );
+    }
+  }]);
+
+  return Page;
+}(_react2.default.Component);
+
+Page.propTypes = {
+  activeCategory: _propTypes2.default.number.isRequired,
+  activePost: _propTypes2.default.objectOf(_propTypes2.default.any).isRequired,
+  categories: _propTypes2.default.arrayOf(_propTypes2.default.any).isRequired,
+  name: _propTypes2.default.string.isRequired,
+  searching: _propTypes2.default.bool.isRequired,
+  posts: _propTypes2.default.arrayOf(_propTypes2.default.object),
+  searchTerm: _propTypes2.default.string.isRequired,
+  setActivePost: _propTypes2.default.func.isRequired
+};
+
+Page.defaultProps = {
+  activeCategory: null,
+  posts: []
+};
+
+exports.default = Page;
+
+/***/ }),
+/* 100 */
+/***/ (function(module, exports) {
+
+// removed by extract-text-webpack-plugin
+module.exports = {"ellipsis":"ellipsis--YlpON","blink":"blink--3n9m6"};
+
+/***/ }),
+/* 101 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _react = __webpack_require__(0);
+
+var _react2 = _interopRequireDefault(_react);
+
+var _propTypes = __webpack_require__(1);
+
+var _propTypes2 = _interopRequireDefault(_propTypes);
+
+var _smoothscroll = __webpack_require__(102);
+
+var _smoothscroll2 = _interopRequireDefault(_smoothscroll);
+
+var _studentHandbookModule = __webpack_require__(8);
+
+var _studentHandbookModule2 = _interopRequireDefault(_studentHandbookModule);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; } /* eslint react/no-danger: 0 */
+
+
+var Post = function (_React$Component) {
+  _inherits(Post, _React$Component);
+
+  function Post(props) {
+    _classCallCheck(this, Post);
+
+    var _this = _possibleConstructorReturn(this, (Post.__proto__ || Object.getPrototypeOf(Post)).call(this, props));
+
+    _this.scrollTo = _this.scrollTo.bind(_this);
+    return _this;
+  }
+
+  _createClass(Post, [{
+    key: 'componentDidMount',
+    value: function componentDidMount() {
+      if (this.props.active === true) {
+        this.scrollTo();
+      }
+    }
+  }, {
+    key: 'componentDidUpdate',
+    value: function componentDidUpdate(prevProps) {
+      if (this.props.active === true && prevProps.active !== true) {
+        this.scrollTo();
+      }
+    }
+  }, {
+    key: 'scrollTo',
+    value: function scrollTo() {
+      (0, _smoothscroll2.default)(this.post);
+    }
+  }, {
+    key: 'render',
+    value: function render() {
+      var _this2 = this;
+
+      var _props = this.props,
+          activeCategory = _props.activeCategory,
+          categories = _props.categories,
+          id = _props.id,
+          index = _props.index,
+          title = _props.title,
+          content = _props.content;
+
+      return _react2.default.createElement(
+        'div',
+        {
+          className: _studentHandbookModule2.default.post,
+          ref: function ref(post) {
+            _this2.post = post;
+          }
+        },
+        index === 0 && categories.filter(function (category) {
+          return category.id === activeCategory;
+        })[0].name === title.rendered ? null : _react2.default.createElement('h1', {
+          className: _studentHandbookModule2.default['post-title'],
+          id: 'post-' + id,
+          dangerouslySetInnerHTML: { __html: title.rendered }
+        }),
+        _react2.default.createElement('p', { dangerouslySetInnerHTML: { __html: content.rendered } })
+      );
+    }
+  }]);
+
+  return Post;
+}(_react2.default.Component);
+
+Post.propTypes = {
+  active: _propTypes2.default.bool.isRequired,
+  activeCategory: _propTypes2.default.number.isRequired,
+  categories: _propTypes2.default.arrayOf(_propTypes2.default.any).isRequired,
+  content: _propTypes2.default.objectOf(_propTypes2.default.any).isRequired,
+  id: _propTypes2.default.number.isRequired,
+  index: _propTypes2.default.number,
+  title: _propTypes2.default.objectOf(_propTypes2.default.any).isRequired
+};
+
+Post.defaultProps = {
+  activeCategory: null,
+  index: 0
+};
+
+exports.default = Post;
+
+/***/ }),
+/* 102 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -8143,265 +8470,6 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 });
 
 /***/ }),
-/* 99 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
-var _reactRedux = __webpack_require__(7);
-
-var _page = __webpack_require__(100);
-
-var _page2 = _interopRequireDefault(_page);
-
-var _actions = __webpack_require__(17);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-var mapStateToProps = function mapStateToProps(state, ownProps) {
-  var name = '';
-  if (state.search.searching === true) {
-    name = 'Search Results';
-  } else if (state.categories.categories.length) {
-    try {
-      name = state.categories.categories.filter(function (category) {
-        return category.id === state.categories.activeCategory;
-      })[0].name;
-    } catch (e) {
-      name = '';
-    }
-  }
-
-  return {
-    activePost: state.pages.activePost,
-    posts: state.search.searchTerm.length ? state.search.posts : state.pages.pages[state.categories.activeCategory],
-    searching: state.search.searching,
-    searchTerm: state.search.searchTerm,
-    name: name,
-    activeCategory: state.categories.categories.filter(function (category) {
-      return category.id === state.categories.activeCategory;
-    })[0]
-  };
-};
-
-var mapDispatchToProps = function mapDispatchToProps(dispatch) {
-  return {
-    clearSearchTerm: function clearSearchTerm() {
-      return dispatch((0, _actions.changeSearchTerm)(''));
-    }
-  };
-};
-
-var PageContainer = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(_page2.default);
-
-exports.default = PageContainer;
-
-/***/ }),
-/* 100 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
-var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; /* eslint react/no-danger: 0 */
-
-
-var _react = __webpack_require__(0);
-
-var _react2 = _interopRequireDefault(_react);
-
-var _propTypes = __webpack_require__(1);
-
-var _propTypes2 = _interopRequireDefault(_propTypes);
-
-var _reactRouterDom = __webpack_require__(8);
-
-var _colbyReactAnimatedEllipsis = __webpack_require__(34);
-
-var _colbyReactAnimatedEllipsis2 = _interopRequireDefault(_colbyReactAnimatedEllipsis);
-
-var _studentHandbookModule = __webpack_require__(9);
-
-var _studentHandbookModule2 = _interopRequireDefault(_studentHandbookModule);
-
-var _post = __webpack_require__(102);
-
-var _post2 = _interopRequireDefault(_post);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-var Page = function Page(_ref) {
-  var searching = _ref.searching,
-      searchTerm = _ref.searchTerm,
-      clearSearchTerm = _ref.clearSearchTerm,
-      activeCategory = _ref.activeCategory,
-      name = _ref.name,
-      posts = _ref.posts,
-      activePost = _ref.activePost;
-
-  if (searching === true) {
-    return _react2.default.createElement(
-      'div',
-      { className: [_studentHandbookModule2.default.page, _studentHandbookModule2.default['page--loading']].join(' ').trim() },
-      _react2.default.createElement(_colbyReactAnimatedEllipsis2.default, null)
-    );
-  }
-
-  if (activePost !== null) {
-    return _react2.default.createElement(
-      'div',
-      { className: _studentHandbookModule2.default.page },
-      _react2.default.createElement(_post2.default, activePost)
-    );
-  }
-
-  var title = searchTerm !== '' ? _react2.default.createElement(
-    'h2',
-    null,
-    'Results for ',
-    _react2.default.createElement(
-      'i',
-      null,
-      searchTerm
-    )
-  ) : _react2.default.createElement(
-    'h2',
-    null,
-    name
-  );
-
-  return _react2.default.createElement(
-    'div',
-    { className: _studentHandbookModule2.default.page },
-    title,
-    searchTerm !== '' ? posts.map(function (post) {
-      return _react2.default.createElement(
-        'div',
-        { key: post.id },
-        _react2.default.createElement(_reactRouterDom.Link, {
-          key: post.id,
-          to: '/handbook/' + post.slug,
-          onClick: function onClick() {
-            clearSearchTerm();
-          },
-          dangerouslySetInnerHTML: { __html: post.title.rendered }
-        })
-      );
-    }) : posts.map(function (post, i) {
-      return _react2.default.createElement(_post2.default, _extends({
-        activeCategory: activeCategory,
-        postsLength: posts.length,
-        key: post.id,
-        index: i
-      }, post));
-    })
-  );
-};
-
-Page.propTypes = {
-  activeCategory: _propTypes2.default.objectOf(_propTypes2.default.any),
-  activePost: _propTypes2.default.objectOf(_propTypes2.default.any),
-  clearSearchTerm: _propTypes2.default.func.isRequired,
-  name: _propTypes2.default.string.isRequired,
-  searching: _propTypes2.default.bool.isRequired,
-  posts: _propTypes2.default.arrayOf(_propTypes2.default.object),
-  searchTerm: _propTypes2.default.string.isRequired
-};
-
-Page.defaultProps = {
-  activeCategory: null,
-  activePost: null,
-  posts: []
-};
-
-exports.default = Page;
-
-/***/ }),
-/* 101 */
-/***/ (function(module, exports) {
-
-// removed by extract-text-webpack-plugin
-module.exports = {"ellipsis":"ellipsis--YlpON","blink":"blink--3n9m6"};
-
-/***/ }),
-/* 102 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.default = Post;
-
-var _react = __webpack_require__(0);
-
-var _react2 = _interopRequireDefault(_react);
-
-var _propTypes = __webpack_require__(1);
-
-var _propTypes2 = _interopRequireDefault(_propTypes);
-
-var _reactRouterDom = __webpack_require__(8);
-
-var _studentHandbookModule = __webpack_require__(9);
-
-var _studentHandbookModule2 = _interopRequireDefault(_studentHandbookModule);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-/* eslint react/no-danger: 0 */
-
-function Post(_ref) {
-  var activeCategory = _ref.activeCategory,
-      id = _ref.id,
-      index = _ref.index,
-      title = _ref.title,
-      content = _ref.content,
-      link = _ref.link,
-      slug = _ref.slug;
-
-  return _react2.default.createElement(
-    'div',
-    { className: _studentHandbookModule2.default.post },
-    index === 0 && activeCategory && activeCategory.name === title.rendered ? null : _react2.default.createElement(
-      'h1',
-      { className: _studentHandbookModule2.default['post-title'], id: 'post-' + id },
-      _react2.default.createElement(_reactRouterDom.Link, {
-        to: '/handbook/' + slug,
-        dangerouslySetInnerHTML: { __html: title.rendered }
-      })
-    ),
-    _react2.default.createElement('p', { dangerouslySetInnerHTML: { __html: content.rendered } })
-  );
-}
-
-Post.propTypes = {
-  activeCategory: _propTypes2.default.objectOf(_propTypes2.default.any),
-  content: _propTypes2.default.objectOf(_propTypes2.default.any).isRequired,
-  id: _propTypes2.default.number.isRequired,
-  index: _propTypes2.default.number,
-  link: _propTypes2.default.string.isRequired,
-  title: _propTypes2.default.objectOf(_propTypes2.default.any).isRequired,
-  slug: _propTypes2.default.string.isRequired
-};
-
-Post.defaultProps = {
-  activeCategory: null,
-  index: 0
-};
-
-/***/ }),
 /* 103 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -8418,7 +8486,7 @@ var _colbyReactSearchInput = __webpack_require__(104);
 
 var _colbyReactSearchInput2 = _interopRequireDefault(_colbyReactSearchInput);
 
-var _actions = __webpack_require__(17);
+var _actions = __webpack_require__(10);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -8624,7 +8692,7 @@ var _react2 = _interopRequireDefault(_react);
 
 var _reactRouterRedux = __webpack_require__(31);
 
-var _reactRouterDom = __webpack_require__(8);
+var _reactRouterDom = __webpack_require__(9);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 

@@ -1,6 +1,7 @@
+/* eslint no-new: 0 */
 import createHistory from 'history/createBrowserHistory';
 import React from 'react';
-import { render } from 'react-dom';
+import ReactDOM from 'react-dom';
 import { createStore, applyMiddleware, combineReducers } from 'redux';
 import thunkMiddleware from 'redux-thunk';
 import { Provider } from 'react-redux';
@@ -13,22 +14,47 @@ import { setActivePost, setActiveCategory } from './actions';
 import StudentHandbook from './components/student-handbook';
 import ConnectedBrowserRouter from './utils/ConnectedBrowserRouter';
 
-class App extends React.Component {
+class App {
   constructor(props) {
-    super(props);
-
-    this.state = { categories: null, pages: null };
-
-    this.history = createHistory();
-    this.routerHistoryMiddleware = routerMiddleware(this.history);
+    this.props = props;
 
     this.fetchCategories = this.fetchCategories.bind(this);
     this.fetchPages = this.fetchPages.bind(this);
+    this.setUpStore = this.setUpStore.bind(this);
+    this.render = this.render.bind(this);
+
+    this.fetchCategories();
   }
 
-  componentDidMount() {
-    this.fetchCategories();
-    this.fetchPages();
+  setUpStore() {
+    this.history = createHistory();
+    const routerHistoryMiddleware = routerMiddleware(history);
+    const middlewares = [thunkMiddleware, routerHistoryMiddleware];
+
+    if (window.location.href.indexOf('localhost') !== -1) {
+      middlewares.push(createLogger());
+    }
+
+    this.store = createStore(
+      combineReducers({ categories, pages, search, routerReducer }),
+      {
+        categories: {
+          categories: this.categories,
+          activeCategory: this.categories[0].id,
+        },
+        pages: {
+          pages: this.pages,
+          activePost: this.pages[this.categories[0].id][0],
+        },
+        search: {
+          searching: false,
+          searchTerm: '',
+        },
+      },
+      applyMiddleware(...middlewares)
+    );
+
+    this.render();
   }
 
   fetchCategories() {
@@ -38,7 +64,8 @@ class App extends React.Component {
     return fetch(url)
       .then((response) => response.json())
       .then((receivedCategories) => {
-        this.setState({ categories: receivedCategories });
+        this.categories = receivedCategories;
+        this.fetchPages();
       });
   }
 
@@ -49,7 +76,8 @@ class App extends React.Component {
     fetch(url).then((response) => response.json()).then((receivedPages) => {
       const categorizedPages = {};
 
-      receivedPages.forEach((post) => {
+      const filteredReceivedPages = receivedPages.filter((page) => page);
+      filteredReceivedPages.forEach((post) => {
         post['handbook-section'].forEach((section) => {
           if (!categorizedPages[section]) {
             categorizedPages[section] = [];
@@ -59,47 +87,20 @@ class App extends React.Component {
         });
       });
 
-      this.setState({ pages: categorizedPages });
+      this.pages = categorizedPages;
+      this.setUpStore();
     });
   }
 
   render() {
-    if (Object.values(this.state).includes(null)) {
-      return null;
-    }
-
-    const middlewares = [thunkMiddleware, this.routerHistoryMiddleware];
-
-    if (window.location.href.indexOf('localhost') !== -1) {
-      middlewares.push(createLogger());
-    }
-
-    const store = createStore(
-      combineReducers({ categories, pages, search, routerReducer }),
-      {
-        categories: {
-          categories: this.state.categories,
-          activeCategory: this.state.categories[0].id,
-        },
-        pages: {
-          pages: this.state.pages,
-        },
-        search: {
-          searching: false,
-          searchTerm: '',
-        },
-      },
-      applyMiddleware(...middlewares)
-    );
-
     const wp = location.href.indexOf('localhost') === -1 ? '' : '/wp';
     const siteName =
       location.href.indexOf('localhost') === -1
         ? 'studentlife'
         : 'communitylife';
 
-    return (
-      <Provider store={store}>
+    ReactDOM.render(
+      <Provider store={this.store}>
         <ConnectedBrowserRouter
           history={this.history}
           basename={`${wp}/${siteName}`}
@@ -110,12 +111,17 @@ class App extends React.Component {
               path="/handbook-section/:slug"
               render={(props) => {
                 const activeCategory = Object.values(
-                  store.getState().categories.categories
+                  this.store.getState().categories.categories
                 ).filter(
                   (category) => category.slug === props.match.params.slug
                 )[0];
 
-                store.dispatch(setActiveCategory(activeCategory.id));
+                this.store.dispatch(
+                  setActivePost(
+                    this.store.getState().pages.pages[activeCategory.id][0]
+                  )
+                );
+                this.store.dispatch(setActiveCategory(activeCategory.id));
                 return <StudentHandbook />;
               }}
             />
@@ -123,7 +129,9 @@ class App extends React.Component {
               path="/handbook/:slug"
               render={(props) => {
                 let pagesArray = [];
-                Object.values(store.getState().pages.pages).forEach((array) => {
+                Object.values(
+                  this.state.store.getState().pages.pages
+                ).forEach((array) => {
                   pagesArray = pagesArray.concat(array);
                 });
 
@@ -132,7 +140,7 @@ class App extends React.Component {
                 );
 
                 if (activePosts.length) {
-                  store.dispatch(setActivePost(activePosts[0]));
+                  this.state.store.dispatch(setActivePost(activePosts[0]));
                 }
 
                 return <StudentHandbook />;
@@ -140,7 +148,8 @@ class App extends React.Component {
             />
           </div>
         </ConnectedBrowserRouter>
-      </Provider>
+      </Provider>,
+      this.props.container
     );
   }
 }
@@ -148,9 +157,7 @@ class App extends React.Component {
 function init() {
   Array.prototype.forEach.call(
     document.querySelectorAll('[data-student-handbook]'),
-    (container) => {
-      render(<App />, container);
-    }
+    (container) => new App({ container })
   );
 }
 

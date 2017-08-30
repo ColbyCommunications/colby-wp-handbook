@@ -63,10 +63,11 @@ export function receiveSearchResults(posts) {
 const searchCache = {};
 const search = (dispatch, url) =>
   fetch(url).then((response) => response.json()).then((posts) => {
-    searchCache[url] = posts;
-    dispatch(receiveSearchResults(posts));
+    const filteredPosts = posts.filter((post) => post);
+    searchCache[url] = filteredPosts;
+    dispatch(receiveSearchResults(filteredPosts));
   });
-const debouncedSearch = _.debounce(search, 200);
+const debouncedSearch = _.debounce(search, 400);
 export function runSearch(searchTerm) {
   return (dispatch) => {
     dispatch(changeSearchTerm(searchTerm));

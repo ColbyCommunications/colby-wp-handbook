@@ -1,7 +1,6 @@
 import { connect } from 'react-redux';
 import CategoryButton from '../components/category-button';
-
-import { changeSearchTerm } from '../actions';
+import { setActivePost } from '../actions';
 
 const mapStateToProps = (state, ownProps) => ({
   active: state.categories.activeCategory === ownProps.id,
@@ -13,7 +12,7 @@ const mapStateToProps = (state, ownProps) => ({
 });
 
 const mapDispatchToProps = (dispatch) => ({
-  clearSearchTerm: () => dispatch(changeSearchTerm('')),
+  setActivePost: (id) => dispatch(setActivePost(id)),
 });
 
 const CategoryButtonContainer = connect(mapStateToProps, mapDispatchToProps)(

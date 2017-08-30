@@ -22,8 +22,6 @@ function categories(
   switch (action.type) {
     case CHANGE_SEARCH_TERM:
       return Object.assign({}, state, {
-        activeCategory:
-          action.searchTerm === '' ? state.savedActiveCategory : null,
         savedActiveCategory:
           state.activeCategory === null
             ? state.savedActiveCategory
@@ -71,20 +69,7 @@ function pages(
         fetching: false,
         posts: action.posts,
         loaded: true,
-        activePost: null,
       });
-
-    case RECEIVE_SEARCH_RESULTS: {
-      return Object.assign({}, state, {
-        activePost: null,
-      });
-    }
-
-    case SET_ACTIVE_CATEGORY: {
-      return Object.assign({}, state, {
-        activePost: null,
-      });
-    }
 
     case SET_ACTIVE_POST: {
       return Object.assign({}, state, { activePost: action.post });
@@ -114,6 +99,10 @@ function search(
         searchTerm: action.searchTerm,
         searching: !!action.searchTerm.length,
       });
+    }
+
+    case SET_ACTIVE_POST: {
+      return Object.assign({}, state, { searchTerm: '' });
     }
 
     case RECEIVE_SEARCH_RESULTS: {

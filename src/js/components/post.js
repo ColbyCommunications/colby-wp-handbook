@@ -1,46 +1,76 @@
 /* eslint react/no-danger: 0 */
-
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Link } from 'react-router-dom';
-
+import smoothScroll from 'smoothscroll';
 import styles from './studentHandbook.module.scss';
 
-export default function Post({
-  activeCategory,
-  id,
-  index,
-  title,
-  content,
-  link,
-  slug,
-}) {
-  return (
-    <div className={styles.post}>
-      {index === 0 && activeCategory && activeCategory.name === title.rendered
-        ? null
-        : <h1 className={styles['post-title']} id={`post-${id}`}>
-          <Link
-            to={`/handbook/${slug}`}
+class Post extends React.Component {
+  constructor(props) {
+    super(props);
+
+    this.scrollTo = this.scrollTo.bind(this);
+  }
+
+  componentDidMount() {
+    if (this.props.active === true) {
+      this.scrollTo();
+    }
+  }
+
+  componentDidUpdate(prevProps) {
+    if (this.props.active === true && prevProps.active !== true) {
+      this.scrollTo();
+    }
+  }
+
+  scrollTo() {
+    smoothScroll(this.post);
+  }
+
+  render() {
+    const {
+      activeCategory,
+      categories,
+      id,
+      index,
+      title,
+      content,
+    } = this.props;
+    return (
+      <div
+        className={styles.post}
+        ref={(post) => {
+          this.post = post;
+        }}
+      >
+        {index === 0 &&
+        categories.filter((category) => category.id === activeCategory)[0]
+          .name === title.rendered
+          ? null
+          : <h1
+            className={styles['post-title']}
+            id={`post-${id}`}
             dangerouslySetInnerHTML={{ __html: title.rendered }}
-          />
-        </h1>}
-      <p dangerouslySetInnerHTML={{ __html: content.rendered }} />
-    </div>
-  );
+          />}
+        <p dangerouslySetInnerHTML={{ __html: content.rendered }} />
+      </div>
+    );
+  }
 }
 
 Post.propTypes = {
-  activeCategory: PropTypes.objectOf(PropTypes.any),
+  active: PropTypes.bool.isRequired,
+  activeCategory: PropTypes.number.isRequired,
+  categories: PropTypes.arrayOf(PropTypes.any).isRequired,
   content: PropTypes.objectOf(PropTypes.any).isRequired,
   id: PropTypes.number.isRequired,
   index: PropTypes.number,
-  link: PropTypes.string.isRequired,
   title: PropTypes.objectOf(PropTypes.any).isRequired,
-  slug: PropTypes.string.isRequired,
 };
 
 Post.defaultProps = {
   activeCategory: null,
   index: 0,
 };
+
+export default Post;
