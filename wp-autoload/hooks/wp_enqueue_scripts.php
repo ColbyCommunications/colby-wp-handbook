@@ -11,7 +11,7 @@ add_action( 'wp_enqueue_scripts', function() {
 		wp_enqueue_style(
 			'student-handbook',
 			"$dist/{$package_json->name}$min.css",
-			[ 'colby-bootstrap' ],
+			[],
 			$package_json->version
 		);
 		wp_enqueue_script(
