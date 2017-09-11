@@ -4,111 +4,113 @@
 
 $link-color: $blue;
 
-:global(.student-handbook-container__title) {
-  padding-top: 3rem;
-  text-align: center;
-}
-
-.category-pane {
-  padding-top: 1.5rem;
-  padding-bottom: 1.5rem;
-  @media screen and (min-width: map-get($grid-breakpoints, 'md')) {
-    padding-right: 1.5rem;
-
-    @include make-col(3);
-  }
-}
-
-.page-pane {
-  padding-top: 2.25rem;
-  padding-bottom: 1.5rem;
-
-  @media screen and (min-width: map-get($grid-breakpoints, 'md')) {
-    padding-left: 1.5rem;
-
-    @include make-col(9);
+:global(student-handbook-container) {
+  :global(.student-handbook-container__title) {
+    padding-top: 3rem;
+    text-align: center;
   }
 
-  h2 {
-    margin-bottom: 1rem;
-  }
-}
+  .category-pane {
+    padding-top: 1.5rem;
+    padding-bottom: 1.5rem;
+    @media screen and (min-width: map-get($grid-breakpoints, 'md')) {
+      padding-right: 1.5rem;
 
-.category {
-  z-index: 0;
-  display: block;
-  flex-wrap: wrap;
-  padding-left: 0;
-  outline: none;
-  border: none;
-  background-color: transparent;
-  box-shadow: none;
-  color: $blue;
-  text-align: left;
-  text-transform: uppercase;
-  white-space: normal;
-  font-size: .891rem;
-
-  &--active {
-    font-weight: 600;
+      @include make-col(3);
+    }
   }
 
-  &:hover {
+  .page-pane {
+    padding-top: 2.25rem;
+    padding-bottom: 1.5rem;
+
+    @media screen and (min-width: map-get($grid-breakpoints, 'md')) {
+      padding-left: 1.5rem;
+
+      @include make-col(9);
+    }
+
+    h2 {
+      margin-bottom: 1rem;
+    }
+  }
+
+  .category {
+    z-index: 0;
+    display: block;
+    flex-wrap: wrap;
+    padding-left: 0;
     outline: none;
     border: none;
     background-color: transparent;
     box-shadow: none;
-    color: darken($blue, 10%);
-    text-decoration: underline;
+    color: $blue;
+    text-align: left;
+    text-transform: uppercase;
+    white-space: normal;
+    font-size: .891rem;
+
+    &--active {
+      font-weight: 600;
+    }
+
+    &:hover {
+      outline: none;
+      border: none;
+      background-color: transparent;
+      box-shadow: none;
+      color: darken($blue, 10%);
+      text-decoration: underline;
+    }
+
+    &:focus,
+    &:active {
+      z-index: 1;
+      outline: none;
+      box-shadow: none;
+    }
   }
 
-  &:focus,
-  &:active {
-    z-index: 1;
-    outline: none;
-    box-shadow: none;
-  }
-}
-
-.post-title {
-  margin-bottom: .375em;
-  text-transform: none;
-  font-weight: 400;
-  font-size: 1.26rem;
-}
-
-.post {
-  margin-bottom: 1.5rem;
-  padding-bottom: .25rem;
-  border-bottom: 1px solid rgba($black, .1);
-
-  &:last-of-type {
-    border-bottom-width: 0;
+  .post-title {
+    margin-bottom: .375em;
+    text-transform: none;
+    font-weight: 400;
+    font-size: 1.26rem;
   }
 
-  section {
-    padding-bottom: 0;
+  .post {
+    margin-bottom: 1.5rem;
+    padding-bottom: .25rem;
+    border-bottom: 1px solid rgba($black, .1);
+
+    &:last-of-type {
+      border-bottom-width: 0;
+    }
+
+    section {
+      padding-bottom: 0;
+    }
+
+    h3 {
+      font-size: 1.06rem;
+      font-size: 400;
+    }
   }
 
-  h3 {
-    font-size: 1.06rem;
-    font-size: 400;
+  .page--loading {
+    padding: 3rem;
+    width: 100%;
+    text-align: center;
+
+    span {
+      font-size: 3rem;
+    }
   }
-}
 
-.page--loading {
-  padding: 3rem;
-  width: 100%;
-  text-align: center;
-
-  span {
-    font-size: 3rem;
+  .sublink {
+    border: none;
+    background: none;
+    color: $blue;
+    text-align: left;
   }
-}
-
-.sublink {
-  border: none;
-  background: none;
-  color: $blue;
-  text-align: left;
 }

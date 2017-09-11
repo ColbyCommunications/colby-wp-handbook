@@ -542,93 +542,6 @@ exports.connect = _connect2.default;
 
 /***/ }),
 /* 8 */
-/***/ (function(module, exports) {
-
-// removed by extract-text-webpack-plugin
-module.exports = {"category-pane":"category-pane--28Tvo","page-pane":"page-pane--3lkWf","category":"category--1bzpI","category--active":"category--active--W-1DI","post-title":"post-title--11hO8","post":"post--sokNo","page--loading":"page--loading--1xsiZ","sublink":"sublink--36fx8"};
-
-/***/ }),
-/* 9 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.withRouter = exports.matchPath = exports.Switch = exports.StaticRouter = exports.Router = exports.Route = exports.Redirect = exports.Prompt = exports.NavLink = exports.MemoryRouter = exports.Link = exports.HashRouter = exports.BrowserRouter = undefined;
-
-var _BrowserRouter2 = __webpack_require__(66);
-
-var _BrowserRouter3 = _interopRequireDefault(_BrowserRouter2);
-
-var _HashRouter2 = __webpack_require__(77);
-
-var _HashRouter3 = _interopRequireDefault(_HashRouter2);
-
-var _Link2 = __webpack_require__(30);
-
-var _Link3 = _interopRequireDefault(_Link2);
-
-var _MemoryRouter2 = __webpack_require__(79);
-
-var _MemoryRouter3 = _interopRequireDefault(_MemoryRouter2);
-
-var _NavLink2 = __webpack_require__(80);
-
-var _NavLink3 = _interopRequireDefault(_NavLink2);
-
-var _Prompt2 = __webpack_require__(81);
-
-var _Prompt3 = _interopRequireDefault(_Prompt2);
-
-var _Redirect2 = __webpack_require__(82);
-
-var _Redirect3 = _interopRequireDefault(_Redirect2);
-
-var _Route2 = __webpack_require__(83);
-
-var _Route3 = _interopRequireDefault(_Route2);
-
-var _Router2 = __webpack_require__(84);
-
-var _Router3 = _interopRequireDefault(_Router2);
-
-var _StaticRouter2 = __webpack_require__(85);
-
-var _StaticRouter3 = _interopRequireDefault(_StaticRouter2);
-
-var _Switch2 = __webpack_require__(86);
-
-var _Switch3 = _interopRequireDefault(_Switch2);
-
-var _matchPath2 = __webpack_require__(87);
-
-var _matchPath3 = _interopRequireDefault(_matchPath2);
-
-var _withRouter2 = __webpack_require__(88);
-
-var _withRouter3 = _interopRequireDefault(_withRouter2);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-exports.BrowserRouter = _BrowserRouter3.default;
-exports.HashRouter = _HashRouter3.default;
-exports.Link = _Link3.default;
-exports.MemoryRouter = _MemoryRouter3.default;
-exports.NavLink = _NavLink3.default;
-exports.Prompt = _Prompt3.default;
-exports.Redirect = _Redirect3.default;
-exports.Route = _Route3.default;
-exports.Router = _Router3.default;
-exports.StaticRouter = _StaticRouter3.default;
-exports.Switch = _Switch3.default;
-exports.matchPath = _matchPath3.default;
-exports.withRouter = _withRouter3.default;
-
-/***/ }),
-/* 10 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -749,6 +662,93 @@ var setActivePost = exports.setActivePost = function setActivePost(post) {
     post: post
   };
 };
+
+/***/ }),
+/* 9 */
+/***/ (function(module, exports) {
+
+// removed by extract-text-webpack-plugin
+module.exports = {"category-pane":"category-pane--28Tvo","page-pane":"page-pane--3lkWf","category":"category--1bzpI","category--active":"category--active--W-1DI","post-title":"post-title--11hO8","post":"post--sokNo","page--loading":"page--loading--1xsiZ","sublink":"sublink--36fx8"};
+
+/***/ }),
+/* 10 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.withRouter = exports.matchPath = exports.Switch = exports.StaticRouter = exports.Router = exports.Route = exports.Redirect = exports.Prompt = exports.NavLink = exports.MemoryRouter = exports.Link = exports.HashRouter = exports.BrowserRouter = undefined;
+
+var _BrowserRouter2 = __webpack_require__(66);
+
+var _BrowserRouter3 = _interopRequireDefault(_BrowserRouter2);
+
+var _HashRouter2 = __webpack_require__(77);
+
+var _HashRouter3 = _interopRequireDefault(_HashRouter2);
+
+var _Link2 = __webpack_require__(30);
+
+var _Link3 = _interopRequireDefault(_Link2);
+
+var _MemoryRouter2 = __webpack_require__(79);
+
+var _MemoryRouter3 = _interopRequireDefault(_MemoryRouter2);
+
+var _NavLink2 = __webpack_require__(80);
+
+var _NavLink3 = _interopRequireDefault(_NavLink2);
+
+var _Prompt2 = __webpack_require__(81);
+
+var _Prompt3 = _interopRequireDefault(_Prompt2);
+
+var _Redirect2 = __webpack_require__(82);
+
+var _Redirect3 = _interopRequireDefault(_Redirect2);
+
+var _Route2 = __webpack_require__(83);
+
+var _Route3 = _interopRequireDefault(_Route2);
+
+var _Router2 = __webpack_require__(84);
+
+var _Router3 = _interopRequireDefault(_Router2);
+
+var _StaticRouter2 = __webpack_require__(85);
+
+var _StaticRouter3 = _interopRequireDefault(_StaticRouter2);
+
+var _Switch2 = __webpack_require__(86);
+
+var _Switch3 = _interopRequireDefault(_Switch2);
+
+var _matchPath2 = __webpack_require__(87);
+
+var _matchPath3 = _interopRequireDefault(_matchPath2);
+
+var _withRouter2 = __webpack_require__(88);
+
+var _withRouter3 = _interopRequireDefault(_withRouter2);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+exports.BrowserRouter = _BrowserRouter3.default;
+exports.HashRouter = _HashRouter3.default;
+exports.Link = _Link3.default;
+exports.MemoryRouter = _MemoryRouter3.default;
+exports.NavLink = _NavLink3.default;
+exports.Prompt = _Prompt3.default;
+exports.Redirect = _Redirect3.default;
+exports.Route = _Route3.default;
+exports.Router = _Router3.default;
+exports.StaticRouter = _StaticRouter3.default;
+exports.Switch = _Switch3.default;
+exports.matchPath = _matchPath3.default;
+exports.withRouter = _withRouter3.default;
 
 /***/ }),
 /* 11 */
@@ -3184,13 +3184,13 @@ var _reactRedux = __webpack_require__(7);
 
 var _reduxLogger = __webpack_require__(65);
 
-var _reactRouterDom = __webpack_require__(9);
+var _reactRouterDom = __webpack_require__(10);
 
 var _reactRouterRedux = __webpack_require__(31);
 
 var _reducers = __webpack_require__(91);
 
-var _actions = __webpack_require__(10);
+var _actions = __webpack_require__(8);
 
 var _studentHandbook = __webpack_require__(93);
 
@@ -7595,7 +7595,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.search = exports.pages = exports.categories = undefined;
 
-var _actions = __webpack_require__(10);
+var _actions = __webpack_require__(8);
 
 /* Reducer for requesting, receiving, and setting acive categories. */
 function categories() {
@@ -7734,7 +7734,7 @@ var _react = __webpack_require__(0);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _studentHandbookModule = __webpack_require__(8);
+var _studentHandbookModule = __webpack_require__(9);
 
 var _studentHandbookModule2 = _interopRequireDefault(_studentHandbookModule);
 
@@ -7820,7 +7820,7 @@ var _propTypes = __webpack_require__(1);
 
 var _propTypes2 = _interopRequireDefault(_propTypes);
 
-var _studentHandbookModule = __webpack_require__(8);
+var _studentHandbookModule = __webpack_require__(9);
 
 var _studentHandbookModule2 = _interopRequireDefault(_studentHandbookModule);
 
@@ -7873,7 +7873,7 @@ var _categoryButton = __webpack_require__(97);
 
 var _categoryButton2 = _interopRequireDefault(_categoryButton);
 
-var _actions = __webpack_require__(10);
+var _actions = __webpack_require__(8);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -7919,9 +7919,9 @@ var _propTypes = __webpack_require__(1);
 
 var _propTypes2 = _interopRequireDefault(_propTypes);
 
-var _reactRouterDom = __webpack_require__(9);
+var _reactRouterDom = __webpack_require__(10);
 
-var _studentHandbookModule = __webpack_require__(8);
+var _studentHandbookModule = __webpack_require__(9);
 
 var _studentHandbookModule2 = _interopRequireDefault(_studentHandbookModule);
 
@@ -8010,7 +8010,7 @@ var _page = __webpack_require__(99);
 
 var _page2 = _interopRequireDefault(_page);
 
-var _actions = __webpack_require__(10);
+var _actions = __webpack_require__(8);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -8077,13 +8077,13 @@ var _propTypes = __webpack_require__(1);
 
 var _propTypes2 = _interopRequireDefault(_propTypes);
 
-var _reactRouterDom = __webpack_require__(9);
+var _reactRouterDom = __webpack_require__(10);
 
 var _colbyReactAnimatedEllipsis = __webpack_require__(34);
 
 var _colbyReactAnimatedEllipsis2 = _interopRequireDefault(_colbyReactAnimatedEllipsis);
 
-var _studentHandbookModule = __webpack_require__(8);
+var _studentHandbookModule = __webpack_require__(9);
 
 var _studentHandbookModule2 = _interopRequireDefault(_studentHandbookModule);
 
@@ -8237,7 +8237,7 @@ var _smoothscroll = __webpack_require__(102);
 
 var _smoothscroll2 = _interopRequireDefault(_smoothscroll);
 
-var _studentHandbookModule = __webpack_require__(8);
+var _studentHandbookModule = __webpack_require__(9);
 
 var _studentHandbookModule2 = _interopRequireDefault(_studentHandbookModule);
 
@@ -8486,7 +8486,7 @@ var _colbyReactSearchInput = __webpack_require__(104);
 
 var _colbyReactSearchInput2 = _interopRequireDefault(_colbyReactSearchInput);
 
-var _actions = __webpack_require__(10);
+var _actions = __webpack_require__(8);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -8692,7 +8692,7 @@ var _react2 = _interopRequireDefault(_react);
 
 var _reactRouterRedux = __webpack_require__(31);
 
-var _reactRouterDom = __webpack_require__(9);
+var _reactRouterDom = __webpack_require__(10);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
