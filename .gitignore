@@ -3,3 +3,5 @@ node_modules
 .DS_Store
 .deploy-servers.js
 format.html
+vendor/squizlabs
+vendor/wp-coding-standards
