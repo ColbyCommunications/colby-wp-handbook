@@ -19,7 +19,9 @@ import * as actions from './actions';
 import * as selectors from './selectors';
 
 export const STORE_NAME = 'colby/wp-handbook';
-export const history = createBrowserHistory( { basename: '/studentlife/' } );
+export const history = createBrowserHistory( {
+	basename: global.colbyWpHandbook.sitePath,
+} );
 
 const routerHistoryMiddleware = routerMiddleware( history );
 const middlewares = [ thunkMiddleware, routerHistoryMiddleware ];

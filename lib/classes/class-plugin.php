@@ -49,10 +49,12 @@ class Plugin {
 			esc_html__( 'Handbook Options', 'colby-handbook' )
 		)
 			->set_page_parent( 'edit.php?post_type=handbook-page' )
-			->add_fields( [
-				Field::make( 'text', self::HANDBOOK_TITLE, esc_html__( 'Handbook Title', 'colby-handbook' ) )
-					->set_help_text( esc_html__( 'The title is displayed at various places around the handbok', 'colby-handbook' ) ),
-			] );
+			->add_fields(
+				[
+					Field::make( 'text', self::HANDBOOK_TITLE, esc_html__( 'Handbook Title', 'colby-handbook' ) )
+						->set_help_text( esc_html__( 'The title is displayed at various places around the handbok', 'colby-handbook' ) ),
+				]
+			);
 
 	}
 
@@ -62,16 +64,19 @@ class Plugin {
 	 * @return void
 	 */
 	public function register_post_type() {
-		register_post_type( self::POST_TYPE, [
-			'taxonomies'   => [ self::TAXONOMY ],
-			'rewrite'      => [ 'slug' => 'handbook' ],
-			'hierarchical' => true,
-			'label'        => esc_html__( 'Handbook Pages', 'colby-handbook' ),
-			'public'       => true,
-			'has_archive'  => true,
-			'show_in_rest' => true,
-			'supports'     => [ 'title', 'editor', 'page-attributes' ],
-		] );
+		register_post_type(
+			self::POST_TYPE,
+			[
+				'taxonomies'   => [ self::TAXONOMY ],
+				'rewrite'      => [ 'slug' => 'handbook' ],
+				'hierarchical' => true,
+				'label'        => esc_html__( 'Handbook Pages', 'colby-handbook' ),
+				'public'       => true,
+				'has_archive'  => true,
+				'show_in_rest' => true,
+				'supports'     => [ 'title', 'editor', 'page-attributes' ],
+			]
+		);
 	}
 
 	/**
@@ -89,12 +94,16 @@ class Plugin {
 	 * Register the handbook-section taxonomy.
 	 */
 	public function register_taxonomy() {
-		register_taxonomy( self::TAXONOMY, self::POST_TYPE, [
-			'hierarchical' => true,
-			'show_in_rest' => true,
-			'public'       => true,
-			'label'        => esc_html__( 'Handbook Section' ),
-		] );
+		register_taxonomy(
+			self::TAXONOMY,
+			self::POST_TYPE,
+			[
+				'hierarchical' => true,
+				'show_in_rest' => true,
+				'public'       => true,
+				'label'        => esc_html__( 'Handbook Section' ),
+			]
+		);
 	}
 
 	/**
@@ -109,7 +118,8 @@ class Plugin {
 
 		wp_enqueue_script(
 			self::ASSET_HANDLE,
-			sprintf( '%sdist/%s.js',
+			sprintf(
+				'%sdist/%s.js',
 				trailingslashit( COLBY_HANDBOOK_URL ),
 				self::ASSET_HANDLE
 			),
@@ -126,7 +136,8 @@ class Plugin {
 
 		wp_enqueue_style(
 			self::ASSET_HANDLE,
-			sprintf( '%sdist/%s.css',
+			sprintf(
+				'%sdist/%s.css',
 				trailingslashit( COLBY_HANDBOOK_URL ),
 				self::ASSET_HANDLE
 			),
@@ -144,7 +155,8 @@ class Plugin {
 			self::ASSET_HANDLE,
 			'colbyWpHandbook',
 			[
-				'restUrl' => rest_url( 'wp/v2/' ),
+				'restUrl'  => rest_url( 'wp/v2/' ),
+				'sitePath' => is_multisite() ? trailingslashit( get_blog_details( get_current_blog_id() )->path ) : '/',
 			]
 		);
 	}
@@ -163,10 +175,21 @@ class Plugin {
 		return $template;
 	}
 
+	/**
+	 * Returns the title of the handbook set via the admin.
+	 *
+	 * @return string
+	 */
 	public function get_handbook_title() {
 		return Helper::get_theme_option( self::HANDBOOK_TITLE );
 	}
 
+	/**
+	 * Adds a post's category slug to its REST data.
+	 *
+	 * @param \WP_REST_Response $response The unfiltered REST response.
+	 * @return \WP_REST_Response
+	 */
 	public function add_category_slug_to_rest_data( $response ) {
 		if ( ! isset( $response->data['handbook-section'] ) || empty( $response->data['handbook-section'] ) ) {
 			return $response;

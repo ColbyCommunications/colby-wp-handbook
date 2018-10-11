@@ -64,6 +64,9 @@ export default withDispatch( ( dispatch, ownProps ) => ( {
 			);
 
 			dispatch( 'colby/wp-handbook' ).setActivePost( activePosts[ 0 ] );
+			dispatch( 'colby/wp-handbook' ).setActiveCategory(
+				activePosts[ 0 ][ 'handbook-section' ][ 0 ]
+			);
 		}
 	},
 } ) )( StudentHandbook );

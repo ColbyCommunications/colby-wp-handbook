@@ -7,8 +7,8 @@
 		}
 	],
 	"scripts": {
-		"lint": "vendor/bin/phpcs -v",
-		"fix": "vendor/bin/phpcbf -v"
+		"phpcbf": "phpcbf --extensions=php",
+		"lint": "phpcs --extensions=php -s"
 	},
 	"autoload": {
 		"classmap": [

@@ -11,7 +11,7 @@ import { ConnectedRouter } from 'connected-react-router';
 import { render } from '@wordpress/element';
 import apiFetch from '@wordpress/api-fetch';
 import domReady from '@wordpress/dom-ready';
-import { select, dispatch } from '@wordpress/data';
+import { dispatch } from '@wordpress/data';
 
 /**
  * Internal dependencies
@@ -62,15 +62,15 @@ const App = () => (
 				/>
 				<Route
 					path="/handbook-section/:slug"
-					render={ ( props ) => {
-						return <StudentHandbook categorySlug={ props.match.params.slug } />;
-					} }
+					render={ ( props ) => (
+						<StudentHandbook categorySlug={ props.match.params.slug } />
+					) }
 				/>
 				<Route
 					path="/handbook/:slug"
-					render={ ( props ) => {
-						return <StudentHandbook postSlug={ props.match.params.slug } />;
-					} }
+					render={ ( props ) => (
+						<StudentHandbook postSlug={ props.match.params.slug } />
+					) }
 				/>
 			</div>
 		</ConnectedRouter>

@@ -17,7 +17,7 @@ if ( ! file_exists( sprintf( '%svendor/autoload.php', COLBY_HANDBOOK_PATH ) ) ) 
 	return;
 }
 
-require_once( sprintf( '%svendor/autoload.php', COLBY_HANDBOOK_PATH ) );
-require_once( sprintf( '%slib/functions.php', COLBY_HANDBOOK_PATH ) );
+require_once sprintf( '%svendor/autoload.php', COLBY_HANDBOOK_PATH );
+require_once sprintf( '%slib/functions.php', COLBY_HANDBOOK_PATH );
 
 ColbyComms\Handbook\Plugin::getInstance()->init();
