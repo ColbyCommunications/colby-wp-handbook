@@ -1,0 +1,27 @@
+{
+	"name": "colbycomms/wp-handbook",
+	"authors": [
+		{
+			"name": "John Watkins",
+			"email": "johnwatkins0@gmail.com"
+		}
+	],
+	"scripts": {
+		"lint": "vendor/bin/phpcs -v",
+		"fix": "vendor/bin/phpcbf -v"
+	},
+	"autoload": {
+		"classmap": [
+			"lib/classes"
+		]
+	},
+	"require-dev": {
+		"squizlabs/php_codesniffer": "^3.3",
+		"wp-coding-standards/wpcs": "^1.1",
+		"phpunit/phpunit": "^7.4"
+	},
+	"require": {
+		"htmlburger/carbon-fields": "^2.2",
+		"byjg/singleton-pattern": "^1.0"
+	}
+}

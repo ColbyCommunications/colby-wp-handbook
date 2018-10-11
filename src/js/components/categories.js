@@ -1,28 +1,26 @@
-import React from 'react';
-import PropTypes from 'prop-types';
+/**
+ * WordPress dependencies
+ */
+import { withSelect } from '@wordpress/data';
 
-import styles from './studentHandbook.module.scss';
+/**
+ * Internal dependencies
+ */
+import CategoryButton from './category-button';
 
-import CategoryButtonContainer from '../containers/category-button-container';
+const Categories = ( { categories } ) => (
+	<div className="categories">
+		{ categories.map( ( category ) => (
+			<CategoryButton
+				key={ category.id }
+				id={ category.id }
+				name={ category.name }
+				slug={ category.slug }
+			/>
+		) ) }
+	</div>
+);
 
-const Categories = ({ categories }) =>
-  (<div className={styles.categories}>
-    {categories.map((category) =>
-      (<CategoryButtonContainer
-        key={category.id}
-        id={category.id}
-        name={category.name}
-        slug={category.slug}
-      />)
-    )}
-  </div>);
-
-Categories.defaultProps = {
-  categories: [],
-};
-
-Categories.propTypes = {
-  categories: PropTypes.arrayOf(PropTypes.object),
-};
-
-export default Categories;
+export default withSelect( ( select ) => ( {
+	categories: select( 'colby/wp-handbook' ).getCategories(),
+} ) )( Categories );
