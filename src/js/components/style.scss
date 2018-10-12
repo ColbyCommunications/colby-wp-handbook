@@ -66,9 +66,10 @@ $link-color: $blue;
     &:focus,
     &:active {
       z-index: 1;
+      color: darken($blue, 10%) !important;
       outline: none;
       box-shadow: none;
-      background: none;
+      background: none !important;
     }
   }
 

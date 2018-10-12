@@ -2,7 +2,7 @@
  * External dependencies.
  */
 import { Provider } from 'react-redux';
-import { Route } from 'react-router-dom';
+import { Route, Switch } from 'react-router-dom';
 import { ConnectedRouter } from 'connected-react-router';
 
 /**
@@ -55,23 +55,24 @@ const App = () => (
 	<Provider store={ store }>
 		<ConnectedRouter history={ history }>
 			<div className="container">
-				<Route
-					exact
-					path="/student-life/handbook/"
-					component={ StudentHandbook }
-				/>
-				<Route
-					path="/handbook-section/:slug"
-					render={ ( props ) => (
-						<StudentHandbook categorySlug={ props.match.params.slug } />
-					) }
-				/>
-				<Route
-					path="/handbook/:slug"
-					render={ ( props ) => (
-						<StudentHandbook postSlug={ props.match.params.slug } />
-					) }
-				/>
+				<Switch>
+					<Route
+						path="/handbook"
+						render={ ( props ) => <StudentHandbook { ...props } /> }
+					/>
+					<Route
+						path="/handbook-section/:slug"
+						render={ ( props ) => (
+							<StudentHandbook categorySlug={ props.match.params.slug } />
+						) }
+					/>
+					<Route
+						path="/handbook/:slug"
+						render={ ( props ) => (
+							<StudentHandbook postSlug={ props.match.params.slug } />
+						) }
+					/>
+				</Switch>
 			</div>
 		</ConnectedRouter>
 	</Provider>
