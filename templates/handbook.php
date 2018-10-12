@@ -1,20 +1,17 @@
 <?php
-add_filter( 'wp_title', function( $title ) {
-	return 'Colby College Student Handbook';
-} );
+/**
+ * Template used to display the handbook.
+ *
+ * @package colbycomms/wp-handbook
+ */
 
-add_filter( 'body_class', function( $classes ) {
-	$classes[] = 'page';
-	return $classes;
-} );
 get_header();
-
-echo do_action( 'colby_college__before_main', '' );
 ?>
-<main id="main" class="noPostThumbnail page">
-	<?php echo apply_filters( 'pre_main_article', '' ); ?>
+<main id="main">
 	<article class="student-handbook-container">
-		<h1 class="student-handbook-container__title">Colby College Student Handbook</h1>
+		<h1 class="student-handbook-container__title">
+			<?php colby_handbook_the_handbook_title(); ?>
+		</h1>
 		<div data-student-handbook></div>
 	</article>
 </main>

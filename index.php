@@ -1,21 +1,23 @@
 <?php
 /**
- * Plugin Name: Colby Student Handbook
- * Description: A single-page application displaying the Colby College student handbook from the WordPress REST API.
- * Author: John Watkins, Colby Communications
+ * Plugin Name: WP Handbook
+ * Description: Displays a student handbook (or similar material) from a custom post type.
+ * Author: John Watkins
+ *
+ * @package colbycomms/wp-handbook
  */
 
-require_once( 'wp-autoload/index.php' );
+// Path to this plugin.
+define( 'COLBY_HANDBOOK_PATH', trailingslashit( plugin_dir_path( __FILE__ ) ) );
 
-/** Load the ACF export. */
-add_action( 'plugins_loaded', function() {
-	include 'fields.php';
-} );
+// URL path to this plugin.
+define( 'COLBY_HANDBOOK_URL', trailingslashit( plugin_dir_url( __FILE__ ) ) );
 
-add_filter( 'template_include', function( $template ) {
+if ( ! file_exists( sprintf( '%svendor/autoload.php', COLBY_HANDBOOK_PATH ) ) ) {
+	return;
+}
 
-	if ( is_post_type_archive( 'handbook-page' ) || is_singular( 'handbook-page' ) || is_tax( 'handbook-section' ) ) {
-		return __DIR__ . '/templates/handbook.php';
-	}
-	return $template;
-} );
+require_once sprintf( '%svendor/autoload.php', COLBY_HANDBOOK_PATH );
+require_once sprintf( '%slib/functions.php', COLBY_HANDBOOK_PATH );
+
+ColbyComms\Handbook\Plugin::getInstance()->init();

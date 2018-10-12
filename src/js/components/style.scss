@@ -1,0 +1,130 @@
+@import '~bootstrap/scss/functions';
+@import '~colby-scss/variables';
+@import '~bootstrap/scss/mixins';
+
+$link-color: $blue;
+
+.student-handbook-container {
+  .student-handbook-container__title {
+    padding-top: 3rem;
+    text-align: center;
+  }
+
+  .category-pane {
+    padding-top: 1.5rem;
+    padding-bottom: 1.5rem;
+    @media screen and (min-width: map-get($grid-breakpoints, 'md')) {
+      padding-right: 1.5rem;
+
+      @include make-col(3);
+    }
+  }
+
+  .page-pane {
+    padding-top: 2.25rem;
+    padding-bottom: 1.5rem;
+
+    @media screen and (min-width: map-get($grid-breakpoints, 'md')) {
+      padding-left: 1.5rem;
+
+      @include make-col(9);
+    }
+
+    h2 {
+      margin-bottom: 1rem;
+    }
+  }
+
+  .category {
+    z-index: 0;
+    display: block;
+    flex-wrap: wrap;
+    padding-left: 0;
+    outline: none;
+    border: none;
+    background: none;
+    box-shadow: none;
+    color: $blue;
+    text-align: left;
+    text-transform: uppercase;
+    white-space: normal;
+    font-size: .891rem;
+
+    &--active {
+      font-weight: 600;
+    }
+
+    &:hover {
+      outline: none;
+      border: none;
+      background: none;
+      box-shadow: none;
+      color: darken($blue, 10%);
+      text-decoration: underline;
+    }
+
+    &:focus,
+    &:active {
+      z-index: 1;
+      color: darken($blue, 10%) !important;
+      outline: none;
+      box-shadow: none;
+      background: none !important;
+    }
+  }
+
+  .post-title {
+    margin-bottom: .375em;
+    text-transform: none;
+    font-weight: 400;
+    font-size: 1.26rem;
+  }
+
+  .post {
+    margin-bottom: 1.5rem;
+    padding-bottom: .25rem;
+    border-bottom: 1px solid rgba($black, .1);
+
+    &:last-of-type {
+      border-bottom-width: 0;
+    }
+
+    section {
+      padding-bottom: 0;
+    }
+
+    h3 {
+      font-size: 1.06rem;
+      font-size: 400;
+    }
+  }
+
+  .page--loading {
+    padding: 3rem;
+    width: 100%;
+    text-align: center;
+
+    span {
+      font-size: 3rem;
+    }
+  }
+
+  .sublink {
+    display: block;
+    border: none;
+    background: none;
+    color: $blue;
+    text-align: left;
+  }
+
+  .components-text-control__input {
+    display: block;
+    width: 100%;
+
+    &::placeholder {
+      font-size: 89.1%;
+      font-weight: 200;
+      text-transform: uppercase;
+    }
+  }
+}

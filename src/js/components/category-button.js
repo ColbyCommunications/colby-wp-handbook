@@ -1,74 +1,76 @@
-/* eslint react/no-danger: 0 */
-
-import React from 'react';
-import PropTypes from 'prop-types';
+/**
+ * External depencencies
+ */
 import { Link } from 'react-router-dom';
 
-import styles from './studentHandbook.module.scss';
+/**
+ * WordPress dependencies
+ */
+import { withSelect, withDispatch } from '@wordpress/data';
+import { compose } from '@wordpress/compose';
 
-const CategoryButton = ({
-  active,
-  id,
-  name,
-  slug,
-  pages,
-  activePost,
-  activeCategory,
-  setActivePost,
-}) =>
-  (<div>
-    <Link
-      to={`/handbook-section/${slug}`}
-      className={[
-        'btn',
-        'btn-primary',
-        styles.category,
-        active === true ? styles['category--active'] : '',
-      ]
-        .join(' ')
-        .trim()}
-      dangerouslySetInnerHTML={{ __html: name }}
-    />
-    {active && pages.length > 1
-      ? <div className="mb-2">
-        {pages.map((page, i) => {
-          if (i === 0 && page.title.rendered === name) {
-            return null;
-          }
-          return (
-            <div
-              key={page.id}
-              className="small pl-2 pb-1"
-              style={{
-                fontWeight: page.id === activePost ? '600' : '400',
-              }}
-            >
-              <button
-                className={styles.sublink}
-                onClick={() => setActivePost(page)}
-                dangerouslySetInnerHTML={{ __html: page.title.rendered }}
-              />
-            </div>
-          );
-        })}
-      </div>
-      : null}
-  </div>);
+const CategoryButton = ( {
+	active,
+	name,
+	slug,
+	posts,
+	activePost,
+	setActivePost,
+} ) => (
+	<div>
+		<Link
+			to={ `/handbook-section/${ slug }` }
+			className={ [
+				'btn',
+				'btn-primary',
+				'category',
+				active === true ? 'category--active' : '',
+			]
+				.join( ' ' )
+				.trim() }
+			dangerouslySetInnerHTML={ { __html: name } }
+		/>
+		{ active && posts.length > 1 ? (
+			<div className="mb-2">
+				{ posts.map(
+					( page, i ) =>
+						i !== 0 &&
+						page.title.rendered !== name && (
+							<div
+								key={ page.id }
+								className="small pl-2 pb-1"
+								style={ {
+									fontWeight: page.id === activePost ? '600' : '400',
+								} }
+							>
+								<button
+									className="sublink"
+									onClick={ () => setActivePost( page ) }
+									dangerouslySetInnerHTML={ { __html: page.title.rendered } }
+								/>
+							</div>
+						)
+				) }
+			</div>
+		) : null }
+	</div>
+);
 
-CategoryButton.propTypes = {
-  active: PropTypes.bool.isRequired,
-  activeCategory: PropTypes.objectOf(PropTypes.any),
-  activePost: PropTypes.number,
-  id: PropTypes.number.isRequired,
-  name: PropTypes.string.isRequired,
-  pages: PropTypes.arrayOf(PropTypes.object).isRequired,
-  slug: PropTypes.string.isRequired,
-  setActivePost: PropTypes.func.isRequired,
-};
+export default compose( [
+	withSelect( ( select, ownProps ) => {
+		const activePost = select( 'colby/wp-handbook' ).getActivePost();
+		const activeCategory = select( 'colby/wp-handbook' ).getActiveCategory();
 
-CategoryButton.defaultProps = {
-  activeCategory: null,
-  activePost: null,
-};
-
-export default CategoryButton;
+		return {
+			active: activeCategory === ownProps.id,
+			posts: select( 'colby/wp-handbook' ).getPosts()[ ownProps.id ],
+			activePost: activePost ? activePost.id : null,
+			activeCategory: select( 'colby/wp-handbook' )
+				.getCategories()
+				.filter( ( category ) => category.id === activeCategory )[ 0 ],
+		};
+	} ),
+	withDispatch( ( dispatch ) => ( {
+		setActivePost: dispatch( 'colby/wp-handbook' ).setActivePost,
+	} ) ),
+] )( CategoryButton );

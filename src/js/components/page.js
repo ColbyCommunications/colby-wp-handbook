@@ -1,92 +1,103 @@
-/* eslint react/no-danger: 0 */
-import React from 'react';
-import PropTypes from 'prop-types';
+/**
+ * External dependencies
+ */
 import { Link } from 'react-router-dom';
-import AnimatedEllipsis from 'colby-react-animated-ellipsis';
 
-import styles from './studentHandbook.module.scss';
+/**
+ * WordPress dependencies
+ */
+import { Fragment } from '@wordpress/element';
+import { withSelect, withDispatch } from '@wordpress/data';
+import { compose } from '@wordpress/compose';
 
 import Post from './post';
 
-class Page extends React.Component {
-  render() {
-    const {
-      searching,
-      searchTerm,
-      categories,
-      activeCategory,
-      name,
-      posts,
-      setActivePost,
-    } = this.props;
-    if (searching === true) {
-      return (
-        <div
-          className={[styles.page, styles['page--loading']].join(' ').trim()}
-        >
-          <AnimatedEllipsis />
-        </div>
-      );
-    }
-
-    const title =
-      searchTerm !== ''
-        ? (<h2>
-            Results for <i>{searchTerm}</i>
-        </h2>)
-        : (<h2>
-          {name}
-        </h2>);
-
-    return (
-      <div
-        className={styles.page}
-        ref={(container) => {
-          this.container = container;
-        }}
-      >
-        {title}
-        {searchTerm !== ''
-          ? posts.map((post) =>
-            (<div key={post.id}>
-              <Link
-                key={post.id}
-                onClick={() => setActivePost(post)}
-                to={`/handbook-section/${post.categorySlug}`}
-                dangerouslySetInnerHTML={{ __html: post.title.rendered }}
-              />
-            </div>)
-            )
-          : posts.map((post, i) =>
-            (<Post
-              activeCategory={activeCategory}
-              active={post.id === this.props.activePost.id}
-              postsLength={posts.length}
-              key={post.id}
-              categories={categories}
-              index={i}
-              {...post}
-            />)
-            )}
-      </div>
-    );
-  }
-}
-
-Page.propTypes = {
-  activeCategory: PropTypes.number.isRequired,
-  activePost: PropTypes.objectOf(PropTypes.any).isRequired,
-  categories: PropTypes.arrayOf(PropTypes.any).isRequired,
-  name: PropTypes.string.isRequired,
-  searching: PropTypes.bool.isRequired,
-  posts: PropTypes.arrayOf(PropTypes.object),
-  searchTerm: PropTypes.string.isRequired,
-  setActivePost: PropTypes.func.isRequired,
+const getTitle = ( searchTerm, name ) => {
+	return searchTerm !== '' ? (
+		<h2>
+			Results for <i>{ searchTerm }</i>
+		</h2>
+	) : (
+		<h2>{ name }</h2>
+	);
 };
 
-Page.defaultProps = {
-  activeCategory: null,
-  posts: [],
-};
+const SearchResults = ( { searchResults, setActivePost, searching } ) => (
+	<Fragment>
+		{ searchResults.length === 0 && ! searching && <div>No results</div> }
+		{ searchResults.map( ( post ) => (
+			<div key={ post.id }>
+				<Link
+					key={ post.id }
+					onClick={ () => setActivePost( post ) }
+					to={ `/handbook-section/${ post.categorySlug }` }
+					dangerouslySetInnerHTML={ { __html: post.title.rendered } }
+				/>
+			</div>
+		) ) }
+	</Fragment>
+);
 
-export default Page;
+const Posts = ( { activeCategory, activePost, posts, categories } ) => (
+	<Fragment>
+		{ posts.map( ( post, i ) => (
+			<Post
+				activeCategory={ activeCategory }
+				active={ post.id === activePost.id }
+				postsLength={ posts.length }
+				key={ post.id }
+				categories={ categories }
+				index={ i }
+				{ ...post }
+			/>
+		) ) }
+	</Fragment>
+);
+
+const Page = ( { searchTerm, name, ...props } ) => (
+	<div className="page">
+		{ getTitle( searchTerm, name ) }
+		{ searchTerm !== '' ? <SearchResults { ...props } /> : <Posts { ...props } /> }
+	</div>
+);
+
+export default compose( [
+	withSelect( ( select ) => {
+		const categories = select( 'colby/wp-handbook' ).getCategories();
+		const posts = select( 'colby/wp-handbook' ).getPosts();
+		const activeCategory = select( 'colby/wp-handbook' ).getActiveCategory();
+		const isSearching = select( 'colby/wp-handbook' ).isSearching();
+		const searchTerm = select( 'colby/wp-handbook' ).getSearchTerm();
+
+		let name = '';
+		if ( isSearching === true ) {
+			name = 'Search Results';
+		} else if ( categories.length ) {
+			try {
+				name = categories.filter(
+					( category ) => category.id === activeCategory
+				)[ 0 ].name;
+			} catch ( e ) {
+				name = '';
+			}
+		}
+
+		return {
+			activePost: select( 'colby/wp-handbook' ).getActivePost(),
+			categories,
+			posts: posts[ activeCategory ] || [],
+			searching: isSearching,
+			searchTerm,
+			name,
+			activeCategory,
+			searchResults: select( 'colby/wp-handbook' ).getSearchResults(),
+		};
+	} ),
+	withDispatch( ( dispatch ) => ( {
+		setActiveCategory: dispatch( 'colby/wp-handbook' ).setActiveCategory,
+		setActivePost: ( post ) => {
+			dispatch( 'colby/wp-handbook' ).setSearchTerm( '' );
+			dispatch( 'colby/wp-handbook' ).setActivePost( post );
+		},
+	} ) ),
+] )( Page );
