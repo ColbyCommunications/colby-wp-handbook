@@ -73,7 +73,12 @@ export default withDispatch( ( dispatch, ownProps ) => ( {
 
 			dispatch( 'colby/wp-handbook' ).setActiveCategory( categories[ 0 ].id );
 
-			if ( posts[ categories[ 0 ].id ].length > 0 ) {
+			if (
+				categories.length > 0 &&
+				categories[ 0 ].id in posts &&
+				posts[ categories[ 0 ].id ] &&
+				posts[ categories[ 0 ].id ].length > 0
+			) {
 				dispatch( 'colby/wp-handbook' ).setActivePost( posts[ categories[ 0 ].id ][ 0 ] );
 			}
 		}
