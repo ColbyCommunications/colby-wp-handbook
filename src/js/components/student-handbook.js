@@ -72,7 +72,10 @@ export default withDispatch( ( dispatch, ownProps ) => ( {
 			const posts = select( 'colby/wp-handbook' ).getPosts();
 
 			dispatch( 'colby/wp-handbook' ).setActiveCategory( categories[ 0 ].id );
-			dispatch( 'colby/wp-handbook' ).setActivePost( posts[ categories[ 0 ].id ][ 0 ] );
+
+			if ( posts[ categories[ 0 ].id ].length > 0 ) {
+				dispatch( 'colby/wp-handbook' ).setActivePost( posts[ categories[ 0 ].id ][ 0 ] );
+			}
 		}
 	},
 } ) )( StudentHandbook );
