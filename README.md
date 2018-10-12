@@ -1,1 +1,1 @@
-# colby-react-student-handbook
+# colby-wp-handbook
