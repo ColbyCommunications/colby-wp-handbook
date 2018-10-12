@@ -36,6 +36,7 @@ class Plugin {
 		add_action( 'after_setup_theme', [ Carbon_Fields::class, 'boot' ] );
 		add_action( 'carbon_fields_register_fields', [ $this, 'create_options_container' ], 9 );
 		add_filter( 'rest_prepare_handbook-page', [ $this, 'add_category_slug_to_rest_data' ] );
+		add_filter( 'rest_handbook-page_query', [ $this, 'raise_rest_per_page_var' ] );
 	}
 
 	/**
@@ -208,5 +209,16 @@ class Plugin {
 		$response->data['categorySlug'] = $term->slug;
 
 		return $response;
+	}
+
+	/**
+	 * Raises the number of posts per query.
+	 *
+	 * @param array $args Unfiltered args.
+	 * @return array Filtered args.
+	 */
+	public function raise_rest_per_page_var( $args ) {
+		$args['posts_per_page'] = 999;
+		return $args;
 	}
 }
